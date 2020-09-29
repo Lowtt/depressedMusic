@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import "./Page.scss";
+import "./Discover.scss";
 import { RouteComponentProps } from "react-router";
+
+import NavBar from '../../components/navBar'
 
 class PageVisit extends Component<IAllTrendProps, any> {
   constructor(props: IAllTrendProps) {
@@ -12,8 +14,8 @@ class PageVisit extends Component<IAllTrendProps, any> {
 
   public render() {
     return (
-      <div className="page-product-attrs">
-        111111111
+      <div className="page-discover">
+        <NavBar activeKey={0}/>
       </div>
     );
   }

@@ -1,1 +1,28 @@
+#root{
+    .ant-layout-header,.ant-layout-footer{
+        padding: 0;
+        background: rgb(36,36,36);
+        height: 70px;
+        width: 100%;
+        position: fixed;
+    }
+    .ant-layout-content{
+        margin: 70px 0;
+    }
+    .ant-layout-footer{
+        background: #f0f2f5;
+        text-align: center;
+        bottom: 0;
+    }
+}
 
+.ant-popover{
+    .po-ul{
+        width: 1100px;
+        padding-left: 180px;
+        height: 35px;
+        .po-item{
+            float: left;
+        }
+    }
+}

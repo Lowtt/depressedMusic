@@ -4,7 +4,7 @@
  * @Autor: Lowt
  * @Date: 2020-09-28 17:36:30
  * @LastEditors: Lowt
- * @LastEditTime: 2020-09-28 17:46:37
+ * @LastEditTime: 2020-09-29 16:59:06
  */
 import { RouteProps } from "react-router";
 import { lazy } from "react";
@@ -13,8 +13,8 @@ interface IRouteItem extends RouteProps {
   }
 let routes: IRouteItem[] = [
   {
-    path: "/test", // 产品属性
-    view: "attribute"
+    path: "/discover", // 热门推荐
+    view: "discover"
   },
   
 ];

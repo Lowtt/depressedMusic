@@ -1,0 +1,39 @@
+.nav-bar {
+    width: 100%;
+    background: rgb(194, 12, 12);
+
+    .nav-ul {
+        width: 1100px;
+        margin: 0 auto;
+        height: 34px;
+        padding-left: 180px;
+
+        .nav-item {
+            float: left;
+            height: 34px;
+            line-height: 34px;
+
+            .nav-item-name {
+                display: inline-block;
+                height: 20px;
+                padding: 0 13px;
+                margin: 7px 17px 0;
+                border-radius: 20px;
+                line-height: 20px;
+
+                &:hover {
+                    background: rgb(155, 9, 9);
+                }
+
+                a {
+                    color: #fff;
+                }
+            }
+
+            .active-item {
+                background: rgb(155, 9, 9);
+            }
+
+        }
+    }
+}
