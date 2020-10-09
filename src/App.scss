@@ -1,10 +1,11 @@
 #root{
-    .ant-layout-header,.ant-layout-footer{
+    .ant-layout-header{
         padding: 0;
         background: rgb(36,36,36);
         height: 70px;
         width: 100%;
         position: fixed;
+        z-index: 9999;
     }
     .ant-layout-content{
         margin: 70px 0;

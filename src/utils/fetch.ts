@@ -4,7 +4,7 @@
  * @Autor: Lowt
  * @Date: 2020-09-29 11:10:37
  * @LastEditors: Lowt
- * @LastEditTime: 2020-09-29 16:06:38
+ * @LastEditTime: 2020-10-09 13:57:02
  */
 import axios from 'axios'
 import { notification } from 'antd';
@@ -20,10 +20,10 @@ fetch.interceptors.request.use((value) => {
 
   value = {
     ...value,
-    baseURL: (window as any).BASE_URL,
+    baseURL: baseConfig.baseUrl,
     headers: {
       ...value.headers,
-      Authorization: baseConfig.authorizationInfo || 'eyJhbGciOiJIUzI1NiJ9.eyJyZWFsTmFtZSI6IkFkbWluIiwiYmVsb25nVG9JZHMiOiI3OCIsImRlcHRJZCI6MTMwLCJ0ZW5hbnRJZCI6bnVsbCwiZGVwdFBhdGgiOiIxMDQvMTI5LzEzMCIsImlkIjoiMSIsImV4cCI6MjI2NzIyMDQ2MX0.-G3ZsnqjPyOFQRZyBglKgrRH5HgkXExaCphRxBZdhuM'
+      // Authorization: baseConfig.authorizationInfo || 'eyJhbGciOiJIUzI1NiJ9.eyJyZWFsTmFtZSI6IkFkbWluIiwiYmVsb25nVG9JZHMiOiI3OCIsImRlcHRJZCI6MTMwLCJ0ZW5hbnRJZCI6bnVsbCwiZGVwdFBhdGgiOiIxMDQvMTI5LzEzMCIsImlkIjoiMSIsImV4cCI6MjI2NzIyMDQ2MX0.-G3ZsnqjPyOFQRZyBglKgrRH5HgkXExaCphRxBZdhuM'
     }
   }
   return value
@@ -33,10 +33,10 @@ fetch.interceptors.request.use((value) => {
 
 fetch.interceptors.response.use(res => {
   if (res.status === 200) {
-    if (res.data.status == 0) {
+    if (res.data.code === 200) {
       return Promise.resolve(res)
     } else {
-      if (res.data.status == 100) {
+      if (res.data.code === 100) {
         notification.error({
           message: 'token错误',
           description: '请重新登录'
@@ -53,6 +53,7 @@ fetch.interceptors.response.use(res => {
   }
   return Promise.reject(res)
 }, error => {
+  console.log(error)
   if (error.response.status === 500) {
     notification.error({
       message: '系统错误',

@@ -4,7 +4,7 @@
  * @Autor: Lowt
  * @Date: 2020-04-08 10:01:09
  * @LastEditors: Lowt
- * @LastEditTime: 2020-09-29 11:14:50
+ * @LastEditTime: 2020-10-09 11:47:27
  */
 class Base {
 
@@ -15,7 +15,6 @@ class Base {
     GetQueryString("token") ||
     localStorage.getItem("sass_token");
 }
-
 function GetQueryString(name: string): any {
   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
   var r = window.location.search.substr(1).match(reg); //查询？后面的参数，并匹配正则

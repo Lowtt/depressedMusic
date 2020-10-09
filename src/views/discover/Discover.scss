@@ -1,0 +1,134 @@
+.page-discover {
+    width: 100%;
+
+    .ant-carousel {
+        .banner-item {
+            height: 285px;
+            overflow: hidden;
+            cursor: pointer;
+            background-size: 6000px;
+            background-position: center center;
+
+            img {
+                margin: 0 auto;
+            }
+        }
+
+        .slick-dots {
+            li {
+                button {
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    -webkit-border-radius: 50%;
+                    -moz-border-radius: 50%;
+                    -ms-border-radius: 50%;
+                    -o-border-radius: 50%;
+                }
+            }
+
+            .slick-active {
+                button {
+                    background-color: red;
+                }
+            }
+        }
+    }
+
+    .list-content {
+        width: 980px;
+        margin: 0 auto;
+        padding: 20px 20px 40px;
+        border: 1px solid rgb(211, 211, 211);
+
+        .header {
+            width: 730px;
+            border-bottom: 2px solid #C10D0C;
+            padding: 0 10px 5px 0;
+
+            a {
+                color: #666;
+
+            }
+
+            .ico {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                box-sizing: border-box;
+                border: 4px solid rgb(193, 13, 12);
+                border-radius: 50%;
+                -webkit-border-radius: 50%;
+                -moz-border-radius: 50%;
+                -ms-border-radius: 50%;
+                -o-border-radius: 50%;
+                margin: 0;
+            }
+
+            .first-nav {
+                margin: 0 10px;
+                font-size: 20px;
+            }
+
+            .line {
+                color: #ccc;
+                margin: 0 10px;
+            }
+
+            .tab {
+                display: inline-block;
+
+                a:hover {
+                    text-decoration: underline;
+                }
+
+            }
+
+            .more {
+                float: right;
+                margin-top: 10px;
+
+                a:hover {
+                    text-decoration: underline;
+                }
+            }
+
+        }
+
+        .hot-area {
+
+            width: 730px;
+
+            .hot-content {
+                padding-top: 20px;
+
+                .hot-item {
+                    margin-bottom: 10px;
+
+                    .hot-img {
+                        width: 100%;
+                        height: 140px;
+                        background-size: 100% 100%;
+                        position: relative;
+                        .play-tab{
+                            height: 28px;
+                            background: rgba($color: #000000, $alpha: 0.5);
+                            line-height: 28px;
+                            position: absolute;
+                            bottom: 0;
+                            width: 100%;
+                            color: #ccc;
+                            padding: 0 15px;
+                        }
+                    }
+
+                    .desc {
+                        margin: 8px 0 3px;
+                        font-size: 14px;
+                    }
+                }
+
+            }
+        }
+    }
+}
