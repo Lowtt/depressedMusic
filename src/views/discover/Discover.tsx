@@ -9,7 +9,7 @@ import "./Discover.scss";
 import NavBar from '../../components/navBar'
 import pageApi from '../../api/discoverApi'
 
-class PageVisit extends Component<IAllTrendProps, any> {
+class PageDiscover extends Component<IAllTrendProps, any> {
   constructor(props: IAllTrendProps) {
     super(props);
     this.state = {
@@ -150,4 +150,4 @@ interface hotItem {
   playCount: number
   id: number
 }
-export default PageVisit;
+export default PageDiscover;

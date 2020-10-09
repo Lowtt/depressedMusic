@@ -1,0 +1,40 @@
+.page-search {
+    width: 980px;
+    margin: 0 auto;
+    padding: 40px;
+    background: #fff;
+
+    .search-bar {
+        width: 420px;
+        height: 40px;
+        margin: 0 auto;
+
+        .ant-input-search {
+            height: 40px;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -ms-border-radius: 5px;
+            -o-border-radius: 5px;
+            box-shadow: -1px -1px #999 inset;
+        }
+    }
+
+    .search-content {
+        .title {
+            margin: 28px 0 18px 0;
+        }
+
+        .ant-tabs-tab {
+            width: 110.5px;
+
+            .ant-tabs-tab-btn {
+                text-align: center;
+                width: 100%;
+            }
+
+        }
+    }
+
+
+}
