@@ -61,7 +61,6 @@ class AppHeader extends Component<RouteComponentProps, any,any> {
     )
   }
   private search(val: string) {
-    console.log(val)
     if (val) {
       this.props.history.push('/search?value=' + val)
     }

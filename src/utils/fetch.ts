@@ -4,7 +4,7 @@
  * @Autor: Lowt
  * @Date: 2020-09-29 11:10:37
  * @LastEditors: Lowt
- * @LastEditTime: 2020-10-09 13:57:02
+ * @LastEditTime: 2020-10-10 11:02:06
  */
 import axios from 'axios'
 import { notification } from 'antd';
@@ -53,8 +53,7 @@ fetch.interceptors.response.use(res => {
   }
   return Promise.reject(res)
 }, error => {
-  console.log(error)
-  if (error.response.status === 500) {
+  if (error?.response?.status === 500) {
     notification.error({
       message: '系统错误',
       description: error.response.data.message
