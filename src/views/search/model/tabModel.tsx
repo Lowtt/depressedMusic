@@ -3,7 +3,7 @@ import React, { Component } from "react";
 
 import { Spin, List } from 'antd'
 
-
+import pageApi from '../../../api/searchApi'
 
 
 
@@ -25,9 +25,7 @@ class PageModel extends Component<componentInter, any> {
         return false
     }
 
-    public componentDidMount() {
-        console.log(this.state.type)
-    }
+    public componentDidMount() { }
 
     public render() {
         const { type } = this.state
@@ -47,13 +45,22 @@ class PageModel extends Component<componentInter, any> {
 
                     dataSource={this.props.data}
                     renderItem={(item: any) => (
-                        <List.Item>
+                        <List.Item onClick={() => this.playSong(item.id)}>
                             <List.Item.Meta
 
-                                title={<a href="https://ant.design">{item.name}</a>}
+                                // title={<a href="https://ant.design">{item.name}</a>}
+
                                 description={
                                     <div className='song-item'>
-                                        
+                                        <p className='song-name'>{item.name}</p>
+                                        <p className='singer'>{item.artists.map((it: { name: string }, index: number) => {
+                                            if (index === 0) {
+                                                return it.name
+                                            } else {
+                                                return "/" + it.name
+                                            }
+                                        })}</p>
+                                        <p className='album'>《{item.album.name}》</p>
                                     </div>
                                 }
                             />
@@ -64,10 +71,22 @@ class PageModel extends Component<componentInter, any> {
             default: break
         }
 
+
         return ele
     }
 
-
+    //播放歌曲
+    private playSong(id: number) {
+        pageApi.querySongUrl({ id: id }).then(res => {
+            let url = res.data.data[0].url
+            let mp3: any = document.createElement('audio')
+            mp3.src = url
+            mp3.play()
+            mp3.onended = function () {
+                this.remove()
+            }
+        })
+    }
 
 }
 
