@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 // import { RouteComponentProps } from "react-router";
 
-import { Spin, List } from 'antd'
-
+import {  List } from 'antd'
+import { createFromIconfontCN } from '@ant-design/icons';
 import pageApi from '../../../api/searchApi'
 
-
+const MyIcon = createFromIconfontCN({
+    scriptUrl: (window as any).ICON_URL
+  });
 
 
 
@@ -52,7 +54,7 @@ class PageModel extends Component<componentInter, any> {
 
                                 description={
                                     <div className='song-item'>
-                                        <p className='song-name'>{item.name}</p>
+                                        <p className='song-name'><MyIcon type='iconbofang_huaban'/>{item.name}</p>
                                         <p className='singer'>{item.artists.map((it: { name: string }, index: number) => {
                                             if (index === 0) {
                                                 return it.name
@@ -79,7 +81,10 @@ class PageModel extends Component<componentInter, any> {
     private playSong(id: number) {
         pageApi.querySongUrl({ id: id }).then(res => {
             let url = res.data.data[0].url
+            let ele = document.getElementById('audio')
+            ele && ele.remove()
             let mp3: any = document.createElement('audio')
+            mp3.id = 'audio'
             mp3.src = url
             mp3.play()
             mp3.onended = function () {
