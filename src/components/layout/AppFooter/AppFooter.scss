@@ -1,39 +1,21 @@
-.app-header {
-    width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    height: 70px;
-    .bar-ul {
-        list-style: none;
-        height: 70px;
-        .bar-item {
-            line-height: 70px;
-            padding: 0 20px;
-            cursor: pointer;
-            float: left;
-            height: 70px;
+.app-footer {
+    .play-bar {
+        position: fixed;
+        bottom: -52px;
+        display: flex;
+        width: 100%;
+        height: 54px;
+        background-image: linear-gradient(to right, rgb(45, 44, 44), rgb(52, 51, 51), rgb(43, 43, 43));
+        border-top: 1px solid #000;
+        box-shadow: 0 -1px 4px #000;
+        transition: 0.5s;
+        -webkit-transition: 0.5s;
+        -moz-transition: 0.5s;
+        -ms-transition: 0.5s;
+        -o-transition: 0.5s;
 
-            
-                color: #ccc;
-            &:hover {
-                background: rgb(0, 0, 0);
-                color: #fff;
-            }
+        &:hover {
+            bottom: 0;
         }
-        .active {
-            background: rgb(0, 0, 0);
-            color: #fff;
-        }
-    }
-    .search-bar{
-        line-height: 70px;
-        margin-left: 80px;
-        .ant-input-affix-wrapper{
-            border-radius: 18px;
-            -webkit-border-radius: 18px;
-            -moz-border-radius: 18px;
-            -ms-border-radius: 18px;
-            -o-border-radius: 18px;
-}
     }
 }

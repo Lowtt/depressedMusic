@@ -64,7 +64,7 @@ class PageSearch extends Component<RouteComponentProps, any> {
   }
 
   public render() {
-    const { title, tabData, activeKey, displayData, unit, playInfo } = this.state
+    const { title, tabData, activeKey, displayData, unit } = this.state
     return (
       <div className="page-search">
         <div className="search-bar">

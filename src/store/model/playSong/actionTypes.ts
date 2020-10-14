@@ -4,6 +4,6 @@
  * @Autor: Lowt
  * @Date: 2020-10-14 17:08:18
  * @LastEditors: Lowt
- * @LastEditTime: 2020-10-14 17:08:34
+ * @LastEditTime: 2020-10-14 18:26:05
  */
-export const INPUT_CHANGE = 'inputChange'
+export const ADD_SONG = 'addSong' //播放歌曲

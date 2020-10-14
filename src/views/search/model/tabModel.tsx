@@ -54,7 +54,7 @@ class PageModel extends Component<componentInter, any> {
                             <List.Item.Meta
                                 description={
                                     <div className='song-item'>
-                                        <span className="play" title='播放'><MyIcon onClick={() => this.playSong(item.id)} type='iconbofang_active_huaban' /></span>
+                                        <span className="play" title='播放'><MyIcon onClick={() => this.playSong(item)} type='iconbofang_active_huaban' /></span>
                                         <p className='song-name'>
                                             <a className='real-name' href={`/song?id=${item.id}`} title={item.name + item.alias.map((it: string, idx: number) => {
                                                 if (idx === 0) {
@@ -109,7 +109,7 @@ class PageModel extends Component<componentInter, any> {
     }
 
     //播放歌曲
-    private playSong(id: number) {
+    private playSong(songInfo: any) {
 
         // pageApi.querySongUrl({ id: id }).then(res => {
         //     let url = res.data.data[0].url
@@ -124,7 +124,7 @@ class PageModel extends Component<componentInter, any> {
         //     }
         // })
 
-        let playSong = action.inputChangeAction(id)
+        let playSong = action.addSongAction(songInfo)
         store.dispatch(playSong)
     }
 

@@ -4,17 +4,17 @@
  * @Autor: Lowt
  * @Date: 2020-10-14 17:17:23
  * @LastEditors: Lowt
- * @LastEditTime: 2020-10-14 17:26:16
+ * @LastEditTime: 2020-10-14 18:27:24
  */
 
 import {
-    INPUT_CHANGE
+    ADD_SONG
 } from './actionTypes'
 
 class Action {
-    public inputChangeAction = (id: any) => ({
-        type: INPUT_CHANGE,
-        id
+    public addSongAction = (songInfo: any) => ({
+        type: ADD_SONG,
+        songInfo
     })
 }
 
