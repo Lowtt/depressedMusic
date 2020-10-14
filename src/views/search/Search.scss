@@ -34,20 +34,93 @@
             }
 
         }
-        .page-tab-content{
-            .ant-list-item{
+
+        .page-tab-content {
+            .ant-list-item {
                 box-sizing: border-box;
-                &:nth-child(even){
-                    background: rgb(247,247,247);
-                    
+                border: 1px solid transparent;
+                padding: 6px 0 6px 15px;
+
+                &:nth-child(even) {
+                    background: rgb(247, 247, 247);
+
                 }
-                &:hover{
-                    background: rgb(242,242,242);
-                    border: 1px solid rgb(225,225,225);
-                    
-                }
-                .song-item{
+
+                
+
+                .song-item {
                     display: flex;
+
+                    .play {
+                        padding: 2px 5px;
+                        .anticon {
+                            cursor: pointer;
+                            opacity: 0.5;
+
+                            &:hover {
+                                opacity: 1;
+                            }
+
+                            svg {
+                                width: 18px;
+                                height: 18px;
+                            }
+                        }
+                    }
+
+                    .song-name {
+                        width: 380px;
+
+                        .real-name {
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
+
+                        .alias {
+                            font-size: 12px;
+                        }
+
+
+                    }
+                    .song-oper{
+                        opacity: 0;
+                        .oper-item{
+                            cursor: pointer;
+                            margin: 0 8px 4px 0;
+                            opacity: 0.6;
+                            &:hover{
+                                opacity: 1;
+                            }
+                        }
+                    }
+
+                    .singer,.album {
+                        width: 16%;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+
+                        a {
+                            color: #333;
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
+                    }
+                    .album{
+                        width: 18%;
+                    }
+                    .time{
+                        margin-left: 16px;
+                    }
+                }
+                &:hover {
+                    background: rgb(242, 242, 242);
+                    border-color: rgb(225, 225, 225);
+                    .song-oper{
+                        opacity: 1;
+                    }
                 }
             }
         }
