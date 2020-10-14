@@ -15,7 +15,21 @@
         -o-transition: 0.5s;
 
         &:hover {
-            bottom: 0;
+            bottom: 0 !important;
+        }
+        .play-lock{
+            position: absolute;
+            top: -22px;
+            right: 40px;
+            background: rgb(43,43,43);
+            border-radius: 50% 50% 0 0;
+            box-shadow: 0 -1px 4px #000;
+            width: 26px;
+            svg{
+                width: 18px;
+                height: 18px;
+                color: #fff;
+            }
         }
     }
 }

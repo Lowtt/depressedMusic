@@ -16,9 +16,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
     }
   }
 
-  public componentDidMount() {
-
-  }
+  public componentDidMount() {}
 
   render() {
     const { lockStatus } = this.state
@@ -26,7 +24,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
       <div className="app-footer">
         <div className="play-bar">
           <div className="play-info"></div>
-          <div className="play-lock">{lockStatus ? <MyIcon onClick={this.changeLockStatus.bind(this)} type='iconsuokai' /> : <MyIcon onClick={this.changeLockStatus.bind(this)} type='iconsuoguan' />}</div>
+          <div className="play-lock"><MyIcon type={lockStatus ? 'iconsuokai' : 'iconsuoguan'} onClick={this.changeLockStatus.bind(this)} /></div>
         </div>
 
       </div>
