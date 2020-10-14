@@ -52,7 +52,8 @@ class PageSearch extends Component<RouteComponentProps, any> {
         "1000": " 个歌单",
         "1009": " 个节目",
         "1002": " 个用户"
-      }
+      },
+
     };
   }
 
@@ -63,15 +64,14 @@ class PageSearch extends Component<RouteComponentProps, any> {
   }
 
   public render() {
-    const { title, tabData, activeKey, displayData, unit } = this.state
+    const { title, tabData, activeKey, displayData, unit, playInfo } = this.state
     return (
       <div className="page-search">
         <div className="search-bar">
           <Search defaultValue={title} onSearch={this.search.bind(this)} />
         </div>
         <div className="search-content">
-          <p className="title">搜索"{title}",找到 <span style={{color:'rgb(194,12,12)'}}>{displayData.songCount > 19 ? 20 : displayData.songCount}</span>{unit[activeKey]}</p>
-
+          <p className="title">搜索"{title}",找到 <span style={{ color: 'rgb(194,12,12)' }}>{displayData.songCount > 19 ? 20 : displayData.songCount}</span>{unit[activeKey]}</p>
           <div className="search-list">
             <Tabs defaultActiveKey="1" type="card" size='large' onChange={this.tabChange.bind(this)}>
               {tabData.map((item: tabItem) => {
@@ -88,6 +88,7 @@ class PageSearch extends Component<RouteComponentProps, any> {
       </div>
     );
   }
+  // 搜索歌曲
   private search(val: string) {
     this.props.history.push('/search?value=' + val)
     let { activeKey } = this.state
@@ -99,6 +100,7 @@ class PageSearch extends Component<RouteComponentProps, any> {
     this.getSearchResult(+key, title)
   }
 
+  // 获取搜索结果
   private getSearchResult(type: number, key: string) {
     const param = {
       keywords: key,

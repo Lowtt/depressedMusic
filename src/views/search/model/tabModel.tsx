@@ -4,6 +4,9 @@ import React, { Component } from "react";
 import { List } from 'antd'
 import { createFromIconfontCN } from '@ant-design/icons';
 import pageApi from '../../../api/searchApi'
+import store from '../../../store'
+import action from '../../../store/model/playSong/actionCreators'
+
 
 const MyIcon = createFromIconfontCN({
     scriptUrl: (window as any).ICON_URL
@@ -16,8 +19,9 @@ class PageModel extends Component<componentInter, any> {
         super(props);
         this.state = {
             type: this.props.type,
-
+          
         };
+        
     }
     public shouldComponentUpdate(nexPros: any) {
         if (this.props.data !== nexPros.data) {
@@ -26,7 +30,7 @@ class PageModel extends Component<componentInter, any> {
         return false
     }
 
-    public componentDidMount() { }
+    public componentDidMount() {}
 
     public render() {
         const { type } = this.state
@@ -97,8 +101,8 @@ class PageModel extends Component<componentInter, any> {
     // 歌曲时间处理
     private dealSongTime(data: number) {
         let time = null
-        
-        var minutes = parseInt((data  / (1000 * 60)) as any);
+
+        var minutes = parseInt((data / (1000 * 60)) as any);
         var seconds = Math.round((data % (1000 * 60)) / 1000);
         time = (minutes < 10 ? ('0' + minutes) : minutes) + ':' + (seconds < 10 ? ('0' + seconds) : seconds)
         return time
@@ -106,19 +110,25 @@ class PageModel extends Component<componentInter, any> {
 
     //播放歌曲
     private playSong(id: number) {
-        pageApi.querySongUrl({ id: id }).then(res => {
-            let url = res.data.data[0].url
-            let ele = document.getElementById('audio')
-            ele && ele.remove()
-            let mp3: any = document.createElement('audio')
-            mp3.id = 'audio'
-            mp3.src = url
-            mp3.play()
-            mp3.onended = function () {
-                this.remove()
-            }
-        })
+
+        // pageApi.querySongUrl({ id: id }).then(res => {
+        //     let url = res.data.data[0].url
+        //     let ele = document.getElementById('audio')
+        //     ele && ele.remove()
+        //     let mp3: any = document.createElement('audio')
+        //     mp3.id = 'audio'
+        //     mp3.src = url
+        //     mp3.play()
+        //     mp3.onended = function () {
+        //         this.remove()
+        //     }
+        // })
+
+        let playSong = action.inputChangeAction(id)
+        store.dispatch(playSong)
     }
+
+   
 
 }
 

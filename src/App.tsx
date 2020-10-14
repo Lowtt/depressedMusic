@@ -7,6 +7,7 @@ import routes from "./config/routes";
 
 import './App.scss';
 import AppHeader from "./components/layout/AppHeader";
+import AppFooter from "./components/layout/AppFooter";
 const { Header, Footer, Content } = Layout;
 function App() {
   return (
@@ -26,7 +27,9 @@ function App() {
               </Switch>
             </Suspense>
           </Content>
-          <Footer>这是尾部</Footer>
+          <Footer>
+            <AppFooter />
+          </Footer>
         </Layout>
       </Fragment>
     </HashRouter>
