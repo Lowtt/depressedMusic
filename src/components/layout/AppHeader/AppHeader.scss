@@ -3,6 +3,12 @@
     margin: 0 auto;
     display: flex;
     height: 70px;
+    .header-img{
+        background: url('https://staticssl.kugou.com/public/root/images/logo.png') no-repeat center;
+        height: 70px;
+        width: 155px;
+        margin-right: 25px;
+    }
     .bar-ul {
         list-style: none;
         height: 70px;

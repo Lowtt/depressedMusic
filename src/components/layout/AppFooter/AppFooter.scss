@@ -17,10 +17,46 @@
         &:hover {
             bottom: 0 !important;
         }
-        .play-controls{
-            width: 140px;
-            padding: 6px 0 0;
+        .play-info{
+            width: 980px;
+            margin: 0 auto;
+            .play-controls{
+                width: 140px;
+                display: flex;
+                justify-content: flex-end;
+                p{
+                    margin: 0;
+                }
+                .last-icon,.next-icon{
+                    margin: 12px 5px;
+                    .anticon{
+                        svg{
+                            width: 28px;
+                            height: 28px;
+                           color: #999;
+                           cursor: pointer;
+                           &:hover{
+                               color: #ccc;
+                           }
+                        }
+                    }
+                }
+                .play-icon{
+                    margin: 8px 0;
+                    .anticon{
+                        svg{
+                            width: 36px;
+                            height: 36px;
+                            color: #fff;
+                            cursor: pointer;
+                        }
+                    }
+                    
+                }
+                
+            }
         }
+       
         .play-lock{
             position: absolute;
             top: -22px;

@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react'
+import React, { Component } from 'react'
 import { RouteComponentProps, withRouter } from "react-router";
 import { createFromIconfontCN } from '@ant-design/icons';
 
@@ -15,9 +15,11 @@ class AppFooter extends Component<RouteComponentProps, any> {
     super(props)
     this.state = {
       lockStatus: true,//默认播放栏隐藏,此时锁状态为开
+      playStatus: false,//默认的播放状态，此时为暂停状态
+      activeSong:[] //正在播放的歌曲集合
     }
     this.changeLockStatus = this.changeLockStatus.bind(this)
-
+    this.changePlayStatus = this.changePlayStatus.bind(this)
   }
 
   public componentDidMount() {
@@ -25,15 +27,15 @@ class AppFooter extends Component<RouteComponentProps, any> {
   }
 
   render() {
-    const { lockStatus } = this.state
+    const { lockStatus, playStatus } = this.state
     return (
       <div className="app-footer">
         <div className="play-bar">
           <div className="play-info">
             <div className="play-controls">
-              <p className="last-icon"><MyIcon type='iconshangyiqu'/></p>
-              <p className="play-icon"><MyIcon type='iconbofang_active_huaban'/></p>
-              <p className="next-icon"><MyIcon type='iconxiayiqu'/></p>
+              <p className="last-icon"><MyIcon type='iconshangyiqu' title='上一曲' /></p>
+              <p className="play-icon"><MyIcon onClick={this.changePlayStatus} type={playStatus ? 'iconplus-pause' : 'iconbofang_bar'} title={playStatus ? '暂停' : '播放'} /></p>
+              <p className="next-icon"><MyIcon type='iconxiayiqu' title='下一曲' /></p>
             </div>
           </div>
           <div className="play-lock" ><MyIcon onClick={this.changeLockStatus} type={lockStatus ? 'iconsuokai' : 'iconsuoguan'} /></div>
@@ -54,6 +56,18 @@ class AppFooter extends Component<RouteComponentProps, any> {
       ele.style.bottom = '-52px'
     }
     this.setState({ lockStatus: !lock })
+  }
+
+  private changePlayStatus() {
+    const {playStatus,playInfo,activeSong} = this.state
+    if(!playInfo.length&&!activeSong.lenght){
+      return
+    }
+    if(activeSong.length){
+      if(playStatus){
+        
+      }
+    }
   }
 
 
