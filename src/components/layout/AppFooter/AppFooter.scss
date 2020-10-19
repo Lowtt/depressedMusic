@@ -17,6 +17,10 @@
         &:hover {
             bottom: 0 !important;
         }
+        .play-controls{
+            width: 140px;
+            padding: 6px 0 0;
+        }
         .play-lock{
             position: absolute;
             top: -22px;
@@ -28,7 +32,10 @@
             svg{
                 width: 18px;
                 height: 18px;
-                color: #fff;
+                color: #ccc;
+                &:hover{
+                    color: #fff;
+                }
             }
         }
     }

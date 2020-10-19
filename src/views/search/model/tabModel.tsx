@@ -19,9 +19,9 @@ class PageModel extends Component<componentInter, any> {
         super(props);
         this.state = {
             type: this.props.type,
-          
+            onPlaySong: []
         };
-        
+
     }
     public shouldComponentUpdate(nexPros: any) {
         if (this.props.data !== nexPros.data) {
@@ -30,7 +30,7 @@ class PageModel extends Component<componentInter, any> {
         return false
     }
 
-    public componentDidMount() {}
+    public componentDidMount() { }
 
     public render() {
         const { type } = this.state
@@ -75,11 +75,11 @@ class PageModel extends Component<componentInter, any> {
                                             <span className='oper-item' title='分享'><MyIcon type='iconfenxiang' /></span>
                                             <span className='oper-item' title='下载'><MyIcon type='iconxiazai' /></span>
                                         </p>
-                                        <p className='singer'>{item.artists.map((it: { name: string, id: number }, index: number) => {
+                                        <p className='singer'>{item.artists.map((it: artists, index: number) => {
                                             if (index === 0) {
-                                                return <a className='singer-item' key={it.id} href={"/artist?id=" + it.id}>{it.name}</a>
+                                                return <a className='singer-item' key={index} href={"/artist?id=" + it.id}>{it.name}</a>
                                             } else {
-                                                return <a className='singer-item' key={it.id} href={"/artist?id=" + it.id}>{"/" + it.name}</a>
+                                                return <a className='singer-item' key={index} href={"/artist?id=" + it.id}>{"/" + it.name}</a>
                                             }
                                         })}</p>
                                         <p className='album'><a title={item.album.name} href={"/album?id=" + item.album.id}>《{item.album.name}》</a> </p>
@@ -111,30 +111,41 @@ class PageModel extends Component<componentInter, any> {
     //播放歌曲
     private playSong(songInfo: any) {
 
-        // pageApi.querySongUrl({ id: id }).then(res => {
-        //     let url = res.data.data[0].url
-        //     let ele = document.getElementById('audio')
-        //     ele && ele.remove()
-        //     let mp3: any = document.createElement('audio')
-        //     mp3.id = 'audio'
-        //     mp3.src = url
-        //     mp3.play()
-        //     mp3.onended = function () {
-        //         this.remove()
-        //     }
-        // })
+        pageApi.querySongUrl({ id: songInfo.id }).then(res => {
+            let onPlaySong = this.state.onPlaySong
+            let url = res.data.data[0].url
+            if (onPlaySong.length) { 
+                onPlaySong[0].pause()
+                onPlaySong[0].remove() 
+                onPlaySong.shift()
+            }
+            let mp3: any = document.createElement('audio')
+            mp3.id = 'audio'
+            mp3.src = url
+            mp3.play()
+            mp3.onended = function () {
+                this.remove()
+            }
+            this.setState({ onPlaySong: [mp3] })
+        })
 
         let playSong = action.addSongAction(songInfo)
         store.dispatch(playSong)
     }
 
-   
+
 
 }
 
 interface componentInter {
     type: number
     data: []
+}
+
+interface artists{
+    name:string
+    id:number
+    img1v1Url:string
 }
 
 export default PageModel;
