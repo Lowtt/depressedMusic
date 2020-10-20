@@ -4,7 +4,7 @@
  * @Autor: Lowt
  * @Date: 2020-10-10 11:40:15
  * @LastEditors: Lowt
- * @LastEditTime: 2020-10-12 18:29:08
+ * @LastEditTime: 2020-10-20 15:48:00
  */
 import fetch from '../utils/fetch'
 
@@ -12,7 +12,7 @@ class SearchApi {
  
   public query(req:any) {
     // 查询歌曲/电台等
-    return fetch.get<any>(`/search?limit=20&keywords=${req.keywords}&type=${req.type}`)
+    return fetch.get<any>(`/cloudsearch?limit=20&keywords=${req.keywords}&type=${req.type}`)
   }
 
   public queryHotList(req:any) {

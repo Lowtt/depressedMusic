@@ -4,11 +4,10 @@
  * @Autor: Lowt
  * @Date: 2020-04-08 10:01:09
  * @LastEditors: Lowt
- * @LastEditTime: 2020-10-09 11:47:27
+ * @LastEditTime: 2020-10-20 14:20:07
  */
 class Base {
 
-  public baseUrl: string = (window as any).BASE_URL; //开发环境
 
   public authorizationInfo: string =
     sessionStorage.getItem("token") ||

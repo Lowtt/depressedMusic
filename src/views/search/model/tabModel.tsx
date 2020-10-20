@@ -3,7 +3,7 @@ import React, { Component } from "react";
 
 import { List } from 'antd'
 import { createFromIconfontCN } from '@ant-design/icons';
-import pageApi from '../../../api/searchApi'
+
 import store from '../../../store'
 import action from '../../../store/model/playSong/actionCreators'
 
@@ -56,13 +56,13 @@ class PageModel extends Component<componentInter, any> {
                                     <div className='song-item'>
                                         <span className="play" title='播放'><MyIcon onClick={() => this.playSong(item)} type='iconbofang_active_huaban' /></span>
                                         <p className='song-name'>
-                                            <a className='real-name' href={`/song?id=${item.id}`} title={item.name + item.alias.map((it: string, idx: number) => {
+                                            <a className='real-name' href={`/song?id=${item.id}`} title={item.name + item.alia.map((it: string, idx: number) => {
                                                 if (idx === 0) {
                                                     return ' - ' + it
                                                 }
                                                 return '/' + it
                                             })}>{item.name}</a>
-                                            <span className='alias'>{item.alias.map((it: string, idx: number) => {
+                                            <span className='alias'>{item.alia.map((it: string, idx: number) => {
                                                 if (idx === 0) {
                                                     return ' - ' + it
                                                 }
@@ -75,15 +75,15 @@ class PageModel extends Component<componentInter, any> {
                                             <span className='oper-item' title='分享'><MyIcon type='iconfenxiang' /></span>
                                             <span className='oper-item' title='下载'><MyIcon type='iconxiazai' /></span>
                                         </p>
-                                        <p className='singer'>{item.artists.map((it: artists, index: number) => {
+                                        <p className='singer'>{item.ar.map((it: artists, index: number) => {
                                             if (index === 0) {
                                                 return <a className='singer-item' key={index} href={"/artist?id=" + it.id}>{it.name}</a>
                                             } else {
                                                 return <a className='singer-item' key={index} href={"/artist?id=" + it.id}>{"/" + it.name}</a>
                                             }
                                         })}</p>
-                                        <p className='album'><a title={item.album.name} href={"/album?id=" + item.album.id}>《{item.album.name}》</a> </p>
-                                        <p className="time">{this.dealSongTime(item.duration)}</p>
+                                        <p className='album'><a title={item.al.name} href={"/album?id=" + item.al.id}>《{item.al.name}》</a> </p>
+                                        <p className="time">{this.dealSongTime(item.dt)}</p>
                                     </div>
                                 }
                             />
@@ -110,25 +110,6 @@ class PageModel extends Component<componentInter, any> {
 
     //播放歌曲
     private playSong(songInfo: any) {
-
-        pageApi.querySongUrl({ id: songInfo.id }).then(res => {
-            let onPlaySong = this.state.onPlaySong
-            let url = res.data.data[0].url
-            if (onPlaySong.length) { 
-                onPlaySong[0].pause()
-                onPlaySong[0].remove() 
-                onPlaySong.shift()
-            }
-            let mp3: any = document.createElement('audio')
-            mp3.id = 'audio'
-            mp3.src = url
-            mp3.play()
-            mp3.onended = function () {
-                this.remove()
-            }
-            this.setState({ onPlaySong: [mp3] })
-        })
-
         let playSong = action.addSongAction(songInfo)
         store.dispatch(playSong)
     }
@@ -142,10 +123,10 @@ interface componentInter {
     data: []
 }
 
-interface artists{
-    name:string
-    id:number
-    img1v1Url:string
+interface artists {
+    name: string
+    id: number
+    img1v1Url: string
 }
 
 export default PageModel;

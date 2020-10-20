@@ -4,11 +4,11 @@
  * @Autor: Lowt
  * @Date: 2020-09-29 11:10:37
  * @LastEditors: Lowt
- * @LastEditTime: 2020-10-10 11:02:06
+ * @LastEditTime: 2020-10-20 15:29:09
  */
 import axios from 'axios'
 import { notification } from 'antd';
-import baseConfig from '../config/baseConfig';
+// import baseConfig from '../config/baseConfig';
 
 const fetch = axios.create({
   withCredentials: true
@@ -16,11 +16,9 @@ const fetch = axios.create({
 
 fetch.interceptors.request.use((value) => {
 
-
-
   value = {
     ...value,
-    baseURL: baseConfig.baseUrl,
+    baseURL: (window as any).BASE_URL,
     headers: {
       ...value.headers,
       // Authorization: baseConfig.authorizationInfo || 'eyJhbGciOiJIUzI1NiJ9.eyJyZWFsTmFtZSI6IkFkbWluIiwiYmVsb25nVG9JZHMiOiI3OCIsImRlcHRJZCI6MTMwLCJ0ZW5hbnRJZCI6bnVsbCwiZGVwdFBhdGgiOiIxMDQvMTI5LzEzMCIsImlkIjoiMSIsImV4cCI6MjI2NzIyMDQ2MX0.-G3ZsnqjPyOFQRZyBglKgrRH5HgkXExaCphRxBZdhuM'

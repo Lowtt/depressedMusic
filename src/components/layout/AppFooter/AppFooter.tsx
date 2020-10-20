@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { RouteComponentProps, withRouter } from "react-router";
 import { createFromIconfontCN } from '@ant-design/icons';
+import { message, Progress, Slider } from 'antd'
 
+
+import pageApi from '../../../api/searchApi'
 import store from '../../../store'
 
 import './AppFooter.scss'
@@ -16,10 +19,22 @@ class AppFooter extends Component<RouteComponentProps, any> {
     this.state = {
       lockStatus: true,//默认播放栏隐藏,此时锁状态为开
       playStatus: false,//默认的播放状态，此时为暂停状态
-      activeSong:[] //正在播放的歌曲集合
+      songLists: store.getState().songLists,//播放歌单
+      activeSong: null, //正在播放的歌曲
+      playEle: null,//播放的元素
+      playIndex: 0,//播放的歌曲在歌单中的下标
+      playModel: 'order',//播放模式(顺序order,随机random,单曲循环loop)
+      percentNum: 0,//歌曲加载条
+      currentNum: 0,//歌曲进度条
+      loadedInter: null,//记载加载条的定时器
+      progressInter: null,//记载进度的定时器
+      currentTime: '00:00',//歌曲当前时间
+      durationTime: '00:00',//歌曲总时间
     }
     this.changeLockStatus = this.changeLockStatus.bind(this)
     this.changePlayStatus = this.changePlayStatus.bind(this)
+    this.playLastSong = this.playLastSong.bind(this)
+    this.playNextSong = this.playNextSong.bind(this)
   }
 
   public componentDidMount() {
@@ -27,15 +42,37 @@ class AppFooter extends Component<RouteComponentProps, any> {
   }
 
   render() {
-    const { lockStatus, playStatus } = this.state
+    const { lockStatus, playStatus, activeSong, percentNum, currentNum, currentTime, durationTime } = this.state
     return (
       <div className="app-footer">
         <div className="play-bar">
           <div className="play-info">
             <div className="play-controls">
-              <p className="last-icon"><MyIcon type='iconshangyiqu' title='上一曲' /></p>
-              <p className="play-icon"><MyIcon onClick={this.changePlayStatus} type={playStatus ? 'iconplus-pause' : 'iconbofang_bar'} title={playStatus ? '暂停' : '播放'} /></p>
-              <p className="next-icon"><MyIcon type='iconxiayiqu' title='下一曲' /></p>
+              <p className="last-icon"><MyIcon onClick={this.playLastSong} type='iconshangyiqu' title='上一曲' /></p>
+              <p className="play-icon"><MyIcon onClick={this.changePlayStatus} type={playStatus ? 'iconzanting' : 'iconbofang_bar'} title={playStatus ? '暂停' : '播放'} /></p>
+              <p className="next-icon"><MyIcon onClick={this.playNextSong} type='iconxiayiqu' title='下一曲' /></p>
+            </div>
+            <div className="album-img" style={{ backgroundImage: `url(${activeSong ? activeSong.al.picUrl : ''})` }}>
+              {activeSong ? <a href={`/song?id=${activeSong.id}`}></a> : null}
+            </div>
+            <div className="play-progress">
+              <p className="song-info">
+                {activeSong ? <a className='song-name' href={`/song?id=${activeSong.id}`}>{activeSong.name}</a> : ''}
+                {activeSong && activeSong.ar.map((it: artists, index: number) => {
+                  if (index === 0) {
+                    return <a className='singer-item' key={index} href={"/artist?id=" + it.id}>{it.name}</a>
+                  } else {
+                    return <a className='singer-item' key={index} href={"/artist?id=" + it.id}>{"/" + it.name}</a>
+                  }
+                })}
+              </p>
+              <div className="progress">
+                <Progress percent={percentNum} showInfo={false} trailColor='rgb(25,25,25)' strokeColor='rgb(83,83,83)' />
+                <Slider className='progress-slider' tooltipVisible={false} value={currentNum} onChange={this.onSliderChange} />
+                <div className="play-time">
+                  <span className='current-time'>{currentTime}</span>/<span className='duration-time'>{durationTime}</span>
+                </div>
+              </div>
             </div>
           </div>
           <div className="play-lock" ><MyIcon onClick={this.changeLockStatus} type={lockStatus ? 'iconsuokai' : 'iconsuoguan'} /></div>
@@ -45,8 +82,20 @@ class AppFooter extends Component<RouteComponentProps, any> {
     )
   }
 
+  private onSliderChange = (value: number) => {
+    // 进度条变动
+    let playEle = this.state.playEle
+    if (playEle) {
+      let current = value * playEle.duration / 100
+      playEle.currentTime = current
+      let ct = this.dealSongTime(current)
+      this.setState({ currentNum: value, currentTime: ct })
+    }
+
+  }
 
   private changeLockStatus() {
+    // 锁定/解锁播放栏
     let lock = this.state.lockStatus
     let ele: any = document.querySelector('.play-bar')
     if (lock) {
@@ -58,27 +107,193 @@ class AppFooter extends Component<RouteComponentProps, any> {
     this.setState({ lockStatus: !lock })
   }
 
-  private changePlayStatus() {
-    const {playStatus,playInfo,activeSong} = this.state
-    if(!playInfo.length&&!activeSong.lenght){
-      return
-    }
-    if(activeSong.length){
-      if(playStatus){
-        
+  private playLastSong() {
+    // 上一曲
+    const { playIndex, songLists, activeSong } = this.state
+    if (songLists.length && activeSong) {
+      if (playIndex === 0) {
+        this.playIndexSong(songLists, songLists.length - 1)
+      } else {
+        this.playIndexSong(songLists, playIndex - 1)
       }
     }
+
+  }
+
+  private playNextSong() {
+    // 下一曲
+    const { playIndex, songLists, activeSong } = this.state
+    if (songLists.length && activeSong) {
+      if (playIndex === songLists.length - 1) {
+        this.playIndexSong(songLists, 0)
+      } else {
+        this.playIndexSong(songLists, playIndex + 1)
+      }
+    }
+  }
+
+  private changePlayStatus() {
+    // 音乐播放/暂停
+    const { playStatus, songLists, activeSong, playEle } = this.state
+    if (!songLists.length && !activeSong) {
+      return
+    }
+    if (activeSong) { //此时有正在播放的歌曲
+
+
+      playStatus ? playEle.pause() : playEle.play()
+
+      this.setState({ playStatus: !playStatus }) //改变播放状态
+    } else {
+      // 无正在播放的歌曲但歌单里有歌曲,并且只有播放时才会触发,播放第一手
+      this.playIndexSong(songLists, 0)
+    }
+  }
+
+  private playIndexSong(songLists: any, index: number) {
+    //播放歌单第index首歌曲
+    let songInfo = songLists[index]
+    this.setState({ playIndex: index, playStatus: false, percentNum: 0 }, () => {
+      // playIndex:播放的歌曲第几首的下标
+      setTimeout(() => {
+        this.playSong(songInfo)
+      }, 500)
+
+    })
+  }
+
+  private setLoadBar() {
+    // 设置加载条
+    let { loadedInter } = this.state
+    if (loadedInter) {
+      clearInterval(loadedInter)
+      this.setState({ loadedInter: null })
+    }
+    let inter = setInterval(() => {
+      let num = this.state.percentNum
+
+      num += 15
+      this.setState({ percentNum: num })
+      if (num >= 100) {
+        clearInterval(inter)
+      }
+    }, 1000)
+    this.setState({ loadedInter: inter })
+  }
+
+  private setProgressBar() {
+    // 设置进度条
+    let { progressInter, playEle } = this.state
+    let duration = playEle.duration
+    if (progressInter) {
+      clearInterval(progressInter)
+      this.setState({ progressInter: null })
+    }
+    let inter = setInterval(() => {
+      let currentTime = playEle.currentTime
+      let num = currentTime * 100 / duration
+      let ct = this.dealSongTime(currentTime)
+      this.setState({ currentNum: num, currentTime: ct })
+      if (currentTime === duration) {
+        clearInterval(inter)
+      }
+    }, 1000)
+    let time = this.dealSongTime(duration)
+    this.setState({ progressInter: inter, durationTime: time })
+  }
+
+  // 歌曲时间处理
+  private dealSongTime(data: number) {
+    let time = null
+    let minutes = parseInt((data / 60) as any);
+    let seconds = Math.round(data % 60);
+    time = (minutes < 10 ? ('0' + minutes) : minutes) + ':' + (seconds < 10 ? ('0' + seconds) : seconds)
+    return time
+  }
+
+  private playSong(songInfo: any) {
+    let playEle = this.state.playEle
+    if (playEle) {
+      playEle.pause()
+    }
+    // 播放歌曲
+    pageApi.querySongUrl({ id: songInfo.id }).then(res => {
+      let url = res.data.data[0].url
+      if (url) {
+        let mp3: any = document.createElement('audio')
+        mp3.id = 'audio'
+        mp3.src = url
+        mp3.play()
+        mp3.onplay = () => {
+          this.setLoadBar()
+        }
+
+        mp3.onended = () => {
+          const { playIndex, songLists, playModel } = this.state
+          this.setState({ playStatus: false }, () => {
+
+            switch (playModel) {
+              case 'loop':
+                // 单曲循环模式
+                setTimeout(() => {
+                  mp3.currentTime = 0
+                  mp3.play();
+                  this.setState({ playStatus: true })
+                }, 1000)
+                break;
+              case 'random':
+                // 随机播放
+                if (songLists.length) {
+                  let index = Math.floor(Math.random() * songLists.length)
+                  this.playIndexSong(songLists, index)
+                } else {
+                  this.setState({ playEle: null, activeSong: null })
+                }
+                break;
+              case 'order':
+                //顺序播放
+                if (songLists.length) {
+                  if (playIndex === songLists.length - 1) {
+                    this.playIndexSong(songLists, 0)
+                  } else {
+                    this.playIndexSong(songLists, playIndex + 1)
+                  }
+                } else {
+                  this.setState({ playEle: null, activeSong: null })
+                }
+                break;
+              default: break
+            }
+
+          })
+        }
+        this.setState({ playEle: mp3, activeSong: songInfo, playStatus: true }, () => {
+          mp3.oncanplay = () => {
+            this.setProgressBar()
+          }
+        })
+      } else {
+        message.warning('暂无播放地址!')
+      }
+
+    })
   }
 
 
   // 监听store变化
   private onStoreChange() {
     this.setState(
-      store.getState().playInfo
+      store.getState().songLists
     )
   }
 }
 
+
+interface artists {
+  name: string
+  id: number
+  img1v1Url: string
+}
 
 
 export default withRouter(AppFooter)
