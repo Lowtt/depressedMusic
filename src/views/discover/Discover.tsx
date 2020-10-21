@@ -10,12 +10,17 @@ import NavBar from '../../components/navBar'
 import pageApi from '../../api/discoverApi'
 
 class PageDiscover extends Component<IAllTrendProps, any> {
+  imgRef: any
   constructor(props: IAllTrendProps) {
+
     super(props);
     this.state = {
       bannerData: [],//轮播图数据
       hotListData: [],//热门推荐数据
+      activeIndex: 0,//默认激活的轮播图下标
     };
+    this.imgRef = React.createRef()
+    // this.changeImg = this.changeImg.bind(this)
   }
 
   public componentDidMount() {
@@ -24,30 +29,37 @@ class PageDiscover extends Component<IAllTrendProps, any> {
   }
 
   public render() {
-    const { bannerData, hotListData } = this.state
+    const { bannerData, hotListData, activeIndex } = this.state
     return (
       <div className="page-discover">
         <NavBar activeKey={0} />
-        <div className="banner">
-          <Carousel autoplay>
-            {bannerData.map((item: bannerItem) => {
-              if (item.url) {
-                return (
-                  <div key={item.imageUrl} className="banner-item" style={{ background: `url("${item.imageUrl}")` }}>
-                    <a href={item.url} target="_blank" rel="noopener noreferrer">
-                      <img width='980' height='100%' src={item.imageUrl} alt={item.typeTitle} />
-                    </a>
-                  </div>
-                )
-              } else {
-                return (
-                  <div key={item.imageUrl} className="banner-item" style={{ background: `url("${item.imageUrl}")` }}>
-                    <img src={item.imageUrl} alt={item.typeTitle} width='980' height='100%' onClick={() => this.clickBanner(item)} />
-                  </div>
-                )
-              }
-            })}
-          </Carousel>
+        <div className="banner" style={{ backgroundImage: `url(${bannerData.length ? bannerData[activeIndex].imageUrl : ''})` }}>
+          <div className="banner-content">
+            <div className="left-arrow" onClick={() => this.changeImg('prev')}></div>
+            <Carousel autoplay ref={this.imgRef} beforeChange={(from: number, to: number) => this.carouselChange(to)}>
+              {bannerData.map((item: bannerItem) => {
+                if (item.url) {
+                  return (
+                    <div key={item.imageUrl} className="banner-item"
+                      style={{ backgroundImage: `url(${item.imageUrl})` }}
+                    >
+                      <a href={item.url} target="_blank" rel="noopener noreferrer">
+                        <img width='980' height='100%' src={item.imageUrl} alt={item.typeTitle} />
+                      </a>
+                    </div>
+                  )
+                } else {
+                  return (
+                    <div key={item.imageUrl} className="banner-item" style={{ backgroundImage: `url(${item.imageUrl})` }}>
+                      <img src={item.imageUrl} alt={item.typeTitle} width='980' height='100%' onClick={() => this.onBannerChange(item)} />
+                    </div>
+                  )
+                }
+              })}
+            </Carousel>
+            <div className="right-arrow" onClick={() => this.changeImg('next')}></div>
+          </div>
+
         </div>
         <div className="list-content">
           <div className="hot-area">
@@ -109,9 +121,22 @@ class PageDiscover extends Component<IAllTrendProps, any> {
     );
   }
 
+  private changeImg(methodName: string) {
+    //轮播图切换
+    if (methodName === 'prev') {
+      this.imgRef.current.prev()
+    } else {
+      this.imgRef.current.next()
+    }
+  }
   // 轮播图点击
-  private clickBanner(obj: bannerItem) {
+  private onBannerChange(obj: bannerItem) {
     console.log('被点击了', obj)
+  }
+
+  private carouselChange(index: number) {
+    //轮播图切换
+    this.setState({ activeIndex: index })
   }
 
   // 获取轮播数据

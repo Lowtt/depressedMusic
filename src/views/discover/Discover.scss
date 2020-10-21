@@ -1,39 +1,75 @@
 .page-discover {
     width: 100%;
 
-    .ant-carousel {
-        .banner-item {
-            height: 285px;
-            overflow: hidden;
-            cursor: pointer;
-            background-size: 6000px;
-            background-position: center center;
+    .banner {
+        background-size: 6000px;
 
-            img {
+        .banner-content {
+            display: flex;
+            width: 1150px;
+            margin: 0 auto;
+            align-items: center;
+
+            .left-arrow,
+            .right-arrow {
+                width: 38px;
+                height: 64px;
+                opacity: 0.8;
+                cursor: pointer;
+                background-image: url('https://s2.music.126.net/style/web2/img/index/banner.png?cc39644e904365bb8d4888d5508c289d');
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+
+            .left-arrow {
+                background-position: 0 -360px;
+            }
+
+            .right-arrow {
+                background-position: 0 -508px;
+            }
+
+            .ant-carousel {
                 margin: 0 auto;
+                width: 980px;
+
+                .banner-item {
+                    height: 285px;
+                    width: 100%;
+
+                    img {
+
+                        cursor: pointer;
+                    }
+                }
+
+                .slick-dots {
+                    li {
+                        button {
+                            width: 10px;
+                            height: 10px;
+                            border-radius: 50%;
+                            -webkit-border-radius: 50%;
+                            -moz-border-radius: 50%;
+                            -ms-border-radius: 50%;
+                            -o-border-radius: 50%;
+                        }
+                    }
+
+                    .slick-active {
+                        button {
+                            background-color: red;
+                        }
+                    }
+                }
             }
         }
 
-        .slick-dots {
-            li {
-                button {
-                    width: 10px;
-                    height: 10px;
-                    border-radius: 50%;
-                    -webkit-border-radius: 50%;
-                    -moz-border-radius: 50%;
-                    -ms-border-radius: 50%;
-                    -o-border-radius: 50%;
-                }
-            }
 
-            .slick-active {
-                button {
-                    background-color: red;
-                }
-            }
-        }
     }
+
 
     .list-content {
         width: 980px;
@@ -110,7 +146,8 @@
                         height: 140px;
                         background-size: 100% 100%;
                         position: relative;
-                        .play-tab{
+
+                        .play-tab {
                             height: 28px;
                             background: rgba($color: #000000, $alpha: 0.5);
                             line-height: 28px;
