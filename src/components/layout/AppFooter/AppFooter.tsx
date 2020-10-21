@@ -31,6 +31,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
       currentTime: '00:00',//歌曲当前时间
       durationTime: '00:00',//歌曲总时间
       showVolume: false,//展示音量控制按键
+      initVolume: 0,//初始音量
     }
     this.changeLockStatus = this.changeLockStatus.bind(this)
     this.changePlayStatus = this.changePlayStatus.bind(this)
@@ -44,7 +45,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
   }
 
   render() {
-    const { lockStatus, playStatus, activeSong, percentNum, currentNum, currentTime, durationTime, playModel, showVolume } = this.state
+    const { lockStatus, playStatus, activeSong, percentNum, currentNum, currentTime, durationTime, playModel, showVolume, initVolume } = this.state
     return (
       <div className="app-footer">
         <div className="play-bar">
@@ -84,7 +85,14 @@ class AppFooter extends Component<RouteComponentProps, any> {
 
                 <MyIcon type='iconlaba' onClick={this.showVolume} />
 
-                <div className="volumn-bar" style={{ visibility: showVolume ? 'visible' : 'hidden' }}><Slider vertical className='change-volume' onChange={(value: number) => this.onChangeVolue(value)} /></div>
+                <div className="volumn-bar" style={{ visibility: showVolume ? 'visible' : 'hidden' }}>
+                  <Slider
+                    vertical
+                    className='change-volume'
+                    value={initVolume}
+                    onChange={(value: number) => this.onChangeVolue(value)}
+                  />
+                </div>
               </div>
               <p className='oper-item'
                 title={playModel === 'loop' ? '单曲循环' : playModel === 'random' ? '随机播放' : '循环播放'}
@@ -118,6 +126,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
     if (playEle) {
       let volume = value / 100
       playEle.volume = volume
+      this.setState({ initVolume: value })
     }
 
   }
@@ -217,10 +226,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
       return
     }
     if (activeSong) { //此时有正在播放的歌曲
-
-
       playStatus ? playEle.pause() : playEle.play()
-
       this.setState({ playStatus: !playStatus }) //改变播放状态
     } else {
       // 无正在播放的歌曲但歌单里有歌曲,并且只有播放时才会触发,播放第一手
@@ -235,7 +241,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
       // playIndex:播放的歌曲第几首的下标
       setTimeout(() => {
         this.playSong(songInfo)
-      }, 500)
+      }, 1000)
 
     })
   }
@@ -284,7 +290,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
   private dealSongTime(data: number) {
     let time = null
     let minutes = parseInt((data / 60) as any);
-    let seconds = Math.round(data % 60);
+    let seconds = Math.ceil(data % 60);
     time = (minutes < 10 ? ('0' + minutes) : minutes) + ':' + (seconds < 10 ? ('0' + seconds) : seconds)
     return time
   }
@@ -304,6 +310,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
         mp3.play()
         mp3.onplay = () => {
           this.setLoadBar()
+          this.setState({ initVolume: mp3.volume * 100 })
         }
 
         mp3.onended = () => {
@@ -361,7 +368,13 @@ class AppFooter extends Component<RouteComponentProps, any> {
   // 监听store变化
   private onStoreChange() {
     this.setState(
-      store.getState().songLists
+      { ...store.getState().songLists }, () => {
+        const { play, willPlayIndex, songLists } = this.state
+        if (play) {
+          //点击播放触发
+          this.playIndexSong(songLists, willPlayIndex)
+        }
+      }
     )
   }
 }

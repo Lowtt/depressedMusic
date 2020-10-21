@@ -19,7 +19,6 @@ class PageModel extends Component<componentInter, any> {
         super(props);
         this.state = {
             type: this.props.type,
-            onPlaySong: []
         };
 
     }
@@ -70,7 +69,7 @@ class PageModel extends Component<componentInter, any> {
                                             })}</span>
                                         </p>
                                         <p className="song-oper">
-                                            <span className='oper-item' title='添加到播放列表'><MyIcon type='iconjiahao' /></span>
+                                            <span className='oper-item' title='添加到播放列表'><MyIcon onClick={() => this.addSong(item)} type='iconjiahao' /></span>
                                             <span className='oper-item' title='收藏'><MyIcon type='iconshoucang' /></span>
                                             <span className='oper-item' title='分享'><MyIcon type='iconfenxiang' /></span>
                                             <span className='oper-item' title='下载'><MyIcon type='iconxiazai' /></span>
@@ -103,14 +102,19 @@ class PageModel extends Component<componentInter, any> {
         let time = null
 
         var minutes = parseInt((data / (1000 * 60)) as any);
-        var seconds = Math.round((data % (1000 * 60)) / 1000);
+        var seconds = Math.ceil((data % (1000 * 60)) / 1000);
         time = (minutes < 10 ? ('0' + minutes) : minutes) + ':' + (seconds < 10 ? ('0' + seconds) : seconds)
         return time
     }
 
-    //播放歌曲
-    private playSong(songInfo: any) {
-        let playSong = action.addSongAction(songInfo)
+    //添加歌曲歌曲
+    private addSong(songInfo: any) {
+        let addSong = action.addSongAction(songInfo)
+        store.dispatch(addSong)
+    }
+
+    private playSong(songInfo:any){
+        let playSong = action.playSongAction(songInfo)
         store.dispatch(playSong)
     }
 
