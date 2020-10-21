@@ -156,18 +156,91 @@
                             margin-top: -4px;
                         }
                     }
-                    .play-time{
+
+                    .play-time {
                         position: absolute;
                         top: 0;
                         right: 0;
-                        .current-time{
+                        color: #797979;
+
+                        .current-time {
                             color: #a1a1a1;
-                        }
-                        .duration-time{
-                            color: #797979;
                         }
                     }
                 }
+
+            }
+
+            .play-opera-icon {
+                width: 250px;
+                padding-top: 20px;
+
+                .oper-item {
+                    display: inline-block;
+                    margin: 0 0 0 10px;
+
+                    .anticon {
+                        svg {
+                            width: 18px;
+                            height: 18px;
+                            opacity: 0.6;
+                            cursor: pointer;
+
+                            &:hover {
+                                opacity: 1;
+                            }
+                        }
+                    }
+                }
+
+                .volume {
+                    margin: 0;
+                    position: relative;
+
+                    .volumn-bar {
+                        position: absolute;
+                        width: 32px;
+                        height: 110px;
+                        top: -132px;
+                        left: -10px;
+                        background: #333;
+                        padding: 10px 0 20px;
+                    }
+                }
+
+                .ant-divider {
+                    border-left: 1px solid rgb(20, 20, 20);
+                    height: 20px;
+                    top: -0.2em;
+                    margin: 0 10px;
+                }
+
+                .play-list {
+                    background: rgb(33, 33, 33);
+                    border-radius: 20px;
+                    -webkit-border-radius: 20px;
+                    -moz-border-radius: 20px;
+                    -ms-border-radius: 20px;
+                    -o-border-radius: 20px;
+                    width: 60px;
+                    text-align: left;
+                    height: 18px;
+
+                    .anticon {
+                        svg {
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+
+                    .play-list-num {
+                        color: #666;
+                        display: inline-block;
+                        width: 40px;
+                        text-align: center;
+                    }
+                }
+
             }
         }
 

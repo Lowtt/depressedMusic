@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { RouteComponentProps, withRouter } from "react-router";
 import { createFromIconfontCN } from '@ant-design/icons';
-import { message, Progress, Slider } from 'antd'
+import { message, Progress, Slider, Divider } from 'antd'
 
 
 import pageApi from '../../../api/searchApi'
@@ -19,7 +19,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
     this.state = {
       lockStatus: true,//默认播放栏隐藏,此时锁状态为开
       playStatus: false,//默认的播放状态，此时为暂停状态
-      songLists: store.getState().songLists,//播放歌单
+      songLists: store.getState().songLists.songLists,//播放歌单
       activeSong: null, //正在播放的歌曲
       playEle: null,//播放的元素
       playIndex: 0,//播放的歌曲在歌单中的下标
@@ -30,9 +30,11 @@ class AppFooter extends Component<RouteComponentProps, any> {
       progressInter: null,//记载进度的定时器
       currentTime: '00:00',//歌曲当前时间
       durationTime: '00:00',//歌曲总时间
+      showVolume: false,//展示音量控制按键
     }
     this.changeLockStatus = this.changeLockStatus.bind(this)
     this.changePlayStatus = this.changePlayStatus.bind(this)
+    this.changePlayModel = this.changePlayModel.bind(this)
     this.playLastSong = this.playLastSong.bind(this)
     this.playNextSong = this.playNextSong.bind(this)
   }
@@ -42,7 +44,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
   }
 
   render() {
-    const { lockStatus, playStatus, activeSong, percentNum, currentNum, currentTime, durationTime } = this.state
+    const { lockStatus, playStatus, activeSong, percentNum, currentNum, currentTime, durationTime, playModel, showVolume } = this.state
     return (
       <div className="app-footer">
         <div className="play-bar">
@@ -52,8 +54,8 @@ class AppFooter extends Component<RouteComponentProps, any> {
               <p className="play-icon"><MyIcon onClick={this.changePlayStatus} type={playStatus ? 'iconzanting' : 'iconbofang_bar'} title={playStatus ? '暂停' : '播放'} /></p>
               <p className="next-icon"><MyIcon onClick={this.playNextSong} type='iconxiayiqu' title='下一曲' /></p>
             </div>
-            <div className="album-img" style={{ backgroundImage: `url(${activeSong ? activeSong.al.picUrl : ''})` }}>
-              {activeSong ? <a href={`/song?id=${activeSong.id}`}></a> : null}
+            <div className="album-img" style={{ backgroundImage: `url(${activeSong ? activeSong.al.picUrl : 'http://s4.music.126.net/style/web2/img/default/default_album.jpg'})` }}>
+              {activeSong ? <a href={`/song?id=${activeSong.id}`}> </a> : ''}
             </div>
             <div className="play-progress">
               <p className="song-info">
@@ -74,12 +76,70 @@ class AppFooter extends Component<RouteComponentProps, any> {
                 </div>
               </div>
             </div>
+            <div className="play-opera-icon">
+              <p className='oper-item' title='收藏'><MyIcon type='iconshoucang_bar' /></p>
+              <p className='oper-item' title='分享'><MyIcon type='iconfenxiang_bar' /></p>
+              <Divider type='vertical' />
+              <div className='oper-item volume'>
+
+                <MyIcon type='iconlaba' onClick={this.showVolume} />
+
+                <div className="volumn-bar" style={{ visibility: showVolume ? 'visible' : 'hidden' }}><Slider vertical className='change-volume' onChange={(value: number) => this.onChangeVolue(value)} /></div>
+              </div>
+              <p className='oper-item'
+                title={playModel === 'loop' ? '单曲循环' : playModel === 'random' ? '随机播放' : '循环播放'}
+              >
+                <MyIcon
+                  onClick={this.changePlayModel}
+                  type={playModel === 'loop' ? 'icondanquxunhuan' : playModel === 'random' ? 'iconsuijibofang' : 'iconxunhuanbofang'}
+                />
+              </p>
+              <p className='oper-item play-list' title='播放列表'>
+                <MyIcon type='iconbflb' />
+                <span className='play-list-num'>{this.state.songLists.length}</span>
+              </p>
+            </div>
           </div>
           <div className="play-lock" ><MyIcon onClick={this.changeLockStatus} type={lockStatus ? 'iconsuokai' : 'iconsuoguan'} /></div>
         </div>
 
       </div>
     )
+  }
+
+  private showVolume = () => {
+    let show = this.state.showVolume
+    this.setState({ showVolume: !show })
+  }
+
+  private onChangeVolue(value: number) {
+    // 修改音量
+    let playEle = this.state.playEle
+    if (playEle) {
+      let volume = value / 100
+      playEle.volume = volume
+    }
+
+  }
+
+  private changePlayModel() {
+    // 改变播放模式
+    let model = this.state.playModel
+    let modelNew = ''
+    switch (model) {
+      case 'loop':
+        modelNew = 'order';
+        break;
+      case 'order':
+        modelNew = 'random';
+        break;
+      case 'random':
+        modelNew = 'loop';
+        break;
+      default:
+        break;
+    }
+    this.setState({ playModel: modelNew })
   }
 
   private onSliderChange = (value: number) => {
@@ -109,26 +169,44 @@ class AppFooter extends Component<RouteComponentProps, any> {
 
   private playLastSong() {
     // 上一曲
-    const { playIndex, songLists, activeSong } = this.state
+    const { playIndex, songLists, activeSong, playModel } = this.state
     if (songLists.length && activeSong) {
-      if (playIndex === 0) {
-        this.playIndexSong(songLists, songLists.length - 1)
-      } else {
-        this.playIndexSong(songLists, playIndex - 1)
+      switch (playModel) {
+        case 'random':
+          let index = Math.floor(Math.random() * songLists.length)
+          this.playIndexSong(songLists, index)
+          break;
+        default:
+          if (playIndex === 0) {
+            this.playIndexSong(songLists, songLists.length - 1)
+          } else {
+            this.playIndexSong(songLists, playIndex - 1)
+          }
+          break
       }
+
     }
 
   }
 
   private playNextSong() {
     // 下一曲
-    const { playIndex, songLists, activeSong } = this.state
+    const { playIndex, songLists, activeSong, playModel } = this.state
     if (songLists.length && activeSong) {
-      if (playIndex === songLists.length - 1) {
-        this.playIndexSong(songLists, 0)
-      } else {
-        this.playIndexSong(songLists, playIndex + 1)
+      switch (playModel) {
+        case 'random':
+          let index = Math.floor(Math.random() * songLists.length)
+          this.playIndexSong(songLists, index)
+          break;
+        default:
+          if (playIndex === songLists.length - 1) {
+            this.playIndexSong(songLists, 0)
+          } else {
+            this.playIndexSong(songLists, playIndex + 1)
+          }
+          break
       }
+
     }
   }
 
