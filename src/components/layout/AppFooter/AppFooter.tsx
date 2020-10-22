@@ -256,7 +256,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
     let inter = setInterval(() => {
       let num = this.state.percentNum
 
-      num += 15
+      num += 10
       this.setState({ percentNum: num })
       if (num >= 100) {
         clearInterval(inter)
