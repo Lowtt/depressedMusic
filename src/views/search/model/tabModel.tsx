@@ -55,7 +55,7 @@ class PageModel extends Component<componentInter, any> {
                                     <div className='song-item'>
                                         <span className="play" title='播放'><MyIcon onClick={() => this.playSong(item)} type='iconbofang_active_huaban' /></span>
                                         <p className='song-name'>
-                                            <a className='real-name' href={`/song?id=${item.id}`} title={item.name + item.alia.map((it: string, idx: number) => {
+                                            <a className='real-name' href={`#/song?id=${item.id}`} title={item.name + item.alia.map((it: string, idx: number) => {
                                                 if (idx === 0) {
                                                     return ' - ' + it
                                                 }

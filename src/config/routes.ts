@@ -4,7 +4,7 @@
  * @Autor: Lowt
  * @Date: 2020-09-28 17:36:30
  * @LastEditors: Lowt
- * @LastEditTime: 2020-10-09 16:20:16
+ * @LastEditTime: 2020-10-22 10:03:05
  */
 import { RouteProps } from "react-router";
 import { lazy } from "react";
@@ -20,6 +20,10 @@ let routes: IRouteItem[] = [
     path: "/search", // 内容搜索
     view: "search"
   },
+  {
+    path:'/song',//歌曲详情
+    view:'song'
+  }
   
 ];
 

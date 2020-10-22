@@ -1,0 +1,212 @@
+.page-song {
+
+    background: rgb(245, 245, 245);
+
+    .song-content {
+        width: 1080px;
+        margin: 0 auto;
+        background-color: #fff;
+        border: 1px solid #d3d3d3;
+        padding: 0 40px;
+        display: flex;
+
+        .song-detail {
+            border-right: 1px solid #d3d3d3;
+            padding: 40px 0;
+
+            .song-info {
+                display: flex;
+
+                .song-img {
+                    .img {
+                        position: relative;
+
+                        img {
+                            margin: 28px;
+                        }
+
+                        .bac-img {
+                            position: absolute;
+                            top: -10px;
+                            left: -10px;
+                            width: 206px;
+                            height: 206px;
+                            background-image: url('https://s2.music.126.net/style/web2/img/coverall.png?4490303f2ffc5c36f0672a045dce31da');
+                            background-position: -140px -580px;
+                        }
+                    }
+
+                    .out-link {
+                        margin: 20px 0 0 38px;
+                        font-size: 12px;
+
+                        .to-link {
+                            color: #0c73c2;
+                            text-decoration: underline;
+                            cursor: pointer;
+                        }
+                    }
+                }
+
+                .song-intro {
+                    padding: 0 20px 0 50px;
+                    width: 484px;
+
+                    .icon {
+                        display: inline-block;
+                        background-image: url('https://s2.music.126.net/style/web2/img/icon.png?0f03d4c47db2ee5579419602a8869edf');
+                    }
+
+                    .song-header {
+                        .title {
+                            .tag {
+                                width: 54px;
+                                height: 24px;
+                                background-position: 0 -463px;
+                                vertical-align: text-bottom;
+                            }
+
+                            .main-title {
+                                font-size: 24px;
+                                padding: 0 10px;
+                            }
+
+                            .mv-icon {
+                                width: 21px;
+                                height: 18px;
+                                background-position: 0 -18px;
+                            }
+
+                            .sub-title {
+                                padding-left: 64px;
+                                color: #bababa;
+                            }
+
+                        }
+
+                        .song-singer {
+
+                            .artist,
+                            .album {
+                                color: #999;
+                                margin-bottom: 0;
+
+                                .songer {
+                                    &:hover {
+                                        text-decoration: underline;
+                                    }
+                                }
+                            }
+                        }
+
+                        .song-btns {
+                            display: flex;
+                            margin-top: 6px;
+
+                            .btn {
+                                margin: 0 10px 0 0;
+                                border: 1px solid rgb(196, 196, 196);
+                                height: 32px;
+                                line-height: 30px;
+                                border-radius: 5px;
+                                -webkit-border-radius: 5px;
+                                -moz-border-radius: 5px;
+                                -ms-border-radius: 5px;
+                                -o-border-radius: 5px;
+                                overflow: hidden;
+
+                                .bt {
+                                    display: inline-block;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    width: 60px;
+                                    background-color: rgb(242, 242, 242);
+
+                                    &:hover {
+                                        background-color: rgb(248, 248, 248);
+                                    }
+                                }
+
+                                .lb,
+                                .rb {
+                                    width: 32px;
+                                    color: #fff;
+
+                                    background-color: rgb(33, 114, 193);
+
+                                    &:hover {
+                                        background-color: rgb(57, 135, 208);
+                                    }
+                                }
+
+                                .lb {
+                                    width: 66px;
+                                    border-right: 1px solid rgb(196, 196, 196);
+
+                                    .anticon {
+                                        svg {
+                                            width: 18px;
+                                            height: 18px;
+                                            vertical-align: inherit;
+                                        }
+                                    }
+                                }
+
+                                .c-bt {
+                                    padding: 0 5px;
+                                    width: auto;
+                                    min-width: 60px;
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                    }
+
+                    .lyric-content {
+                        .lyric {
+                            overflow: hidden;
+                        }
+
+                        .show-lyric {
+                            cursor: pointer;
+                            color: #0c73c2;
+
+                            
+                                &:hover {
+                                    .tip{
+                                        text-decoration: underline;
+                                    }
+                                    
+                                }
+                            
+                        }
+                        .error{
+                            text-align: end;
+                            a{
+                                text-decoration: underline;
+                                color: #bababa;
+                                font-size: 12px;
+                            }
+                        }
+                    }
+                }
+            }
+            .song-comment{
+                padding-right: 20px;
+                .comment-title{
+                    padding: 6px 0;
+                    border-bottom: 2px solid #c20c0c;
+                    .main-title{
+                        font-size: 20px;
+                        font-weight: 550;
+                        margin-right: 14px;
+                    }
+                    .sub-title{
+                        font-size: 12px;
+                        color: #666;
+                    }
+                }
+            }
+        }
+    }
+}

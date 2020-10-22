@@ -56,7 +56,7 @@ class AppFooter extends Component<RouteComponentProps, any> {
               <p className="next-icon"><MyIcon onClick={this.playNextSong} type='iconxiayiqu' title='下一曲' /></p>
             </div>
             <div className="album-img" style={{ backgroundImage: `url(${activeSong ? activeSong.al.picUrl : 'http://s4.music.126.net/style/web2/img/default/default_album.jpg'})` }}>
-              {activeSong ? <a href={`/song?id=${activeSong.id}`}> </a> : ''}
+              {activeSong ? <a href={`#/song?id=${activeSong.id}`}> </a> : ''}
             </div>
             <div className="play-progress">
               <p className="song-info">
