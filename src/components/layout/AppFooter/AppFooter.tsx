@@ -60,12 +60,12 @@ class AppFooter extends Component<RouteComponentProps, any> {
             </div>
             <div className="play-progress">
               <p className="song-info">
-                {activeSong ? <a className='song-name' href={`/song?id=${activeSong.id}`}>{activeSong.name}</a> : ''}
+                {activeSong ? <a className='song-name' href={`#/song?id=${activeSong.id}`}>{activeSong.name}</a> : ''}
                 {activeSong && activeSong.ar.map((it: artists, index: number) => {
                   if (index === 0) {
-                    return <a className='singer-item' key={index} href={"/artist?id=" + it.id}>{it.name}</a>
+                    return <a className='singer-item' key={index} href={"#/artist?id=" + it.id}>{it.name}</a>
                   } else {
-                    return <a className='singer-item' key={index} href={"/artist?id=" + it.id}>{"/" + it.name}</a>
+                    return <a className='singer-item' key={index} href={"#/artist?id=" + it.id}>{"/" + it.name}</a>
                   }
                 })}
               </p>

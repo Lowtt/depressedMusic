@@ -40,6 +40,10 @@ class PageSong extends Component<RouteComponentProps, any> {
 
     }
 
+    public shouldComponentUpdate(nextProps:any){
+        console.log(this.props,111,nextProps)
+        return true
+    }
 
     public componentDidMount() {
         this.querySongDetail()
