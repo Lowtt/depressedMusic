@@ -1,8 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, createElement } from "react";
 import { RouteComponentProps } from "react-router";
-import { message } from 'antd';
-import { createFromIconfontCN } from '@ant-design/icons';
+import { message, Input, Button, Comment, List, Divider, Pagination } from 'antd';
+import { createFromIconfontCN, LikeOutlined, LikeFilled } from '@ant-design/icons';
+
 import qs from 'query-string'
+import moment from 'moment'
 
 import "./Song.scss";
 import NavBar from '../../components/navBar'
@@ -15,8 +17,9 @@ const MyIcon = createFromIconfontCN({
 });
 
 
+
 class PageSong extends Component<RouteComponentProps, any> {
-    
+
     constructor(props: RouteComponentProps) {
         super(props);
         // const [songDetail,setSongDetail] = useState({})
@@ -24,32 +27,30 @@ class PageSong extends Component<RouteComponentProps, any> {
             songId: qs.parse(this.props.history.location.search).id,//歌曲id
             songDetail: {},//歌曲详情
             param: {
-                offset: 0,//歌曲评论默认偏移量,
+                offset: 0,//歌曲评论默认偏移量,(当前页数-1)*limit(limit默认为20)
                 limit: 20,//默认限制
             },
-            songComment: {},//歌曲评论
+            songComment: { hotComments: [], comments: [] },//歌曲评论
             lyric: '',//歌词
             showAll: false,//展开/收起歌词标识
-
+            existSong: true,//存在该歌曲?
+            playlist: [],//包含这首歌歌单
+            songlist: [],//相似歌曲
         };
-      
-        this.playSong = this.playSong.bind(this)
-        this.addSong = this.addSong.bind(this)
+
     }
 
 
     public componentDidMount() {
         this.querySongDetail()
-        this.queryComment()
-        this.queryLyric()
     }
 
     public render() {
-        const { songId, songDetail, songComment, lyric, showAll } = this.state
+        const { songId, songDetail, songComment, lyric, showAll, existSong, playlist, songlist } = this.state
         return (
             <div className="page-song">
                 <NavBar activeKey={0} />
-                <div className="song-content">
+                {existSong ? <div className="song-content">
                     <div className="song-detail">
                         <div className="song-info">
                             <div className="song-img">
@@ -85,8 +86,8 @@ class PageSong extends Component<RouteComponentProps, any> {
                                     </div>
                                     <div className="song-btns">
                                         <p className="btn">
-                                            <span className="lb bt" title='播放' onClick={this.playSong}><MyIcon type='iconbofang_song' /> 播放</span>
-                                            <span className="rb bt" title='添加到播放列表' onClick={this.addSong}><MyIcon type='iconadd' /></span>
+                                            <span className="lb bt" title='播放' onClick={() => this.playSong(songDetail)}><MyIcon type='iconbofang_song' /> 播放</span>
+                                            <span className="rb bt" title='添加到播放列表' onClick={() => this.addSong(songDetail)}><MyIcon type='iconadd' /></span>
                                         </p>
                                         <p className="btn">
                                             <span className='bt'><MyIcon type='iconshoucang' /> 收藏</span>
@@ -123,13 +124,187 @@ class PageSong extends Component<RouteComponentProps, any> {
                                 <span className="main-title">评论</span>
                                 <span className="sub-title">共{songComment.total}条评论</span>
                             </div>
+                            <div className="your-comment">
+                                <div className="send-comment">
+                                    <div className="user-img">
+                                        {/* 登录 */}
+                                        {/* <img src="http://p3.music.126.net/M_osm40o9ZSt9o_HPisrsA==/18594940650651691.jpg?param=50y50" alt="" /> */}
+                                        <img src="http://s4.music.126.net/style/web2/img/default/default_avatar.jpg?param=50y50" alt="" width='50' height='50' />
+                                    </div>
+                                    <div className="ipt-area">
+                                        <Input bordered={false} placeholder='评论' />
+                                    </div>
+                                </div>
+                                <div className="btns">
+                                    <span style={{ color: '#bababa', fontSize: '12px', padding: '0 10px' }}>140</span>
+                                    <Button size='small' type='primary'>评论</Button>
+                                </div>
+                            </div>
+                            {songComment.hotComments && songComment.hotComments.length ? <div className="hot-comment">
+                                <p className="c-title">
+                                    精彩评论
+                                </p>
+                                <div className="c-content">
+                                    <List
+                                        className="comment-list"
+                                        itemLayout="horizontal"
+                                        dataSource={songComment.hotComments}
+                                        renderItem={(item: any) => (
+                                            <li className='c-item' key={item.commentId}>
+                                                <Comment
+                                                    actions={[
+                                                        <span>
+                                                            {createElement(item.liked === 'liked' ? LikeFilled : LikeOutlined)}
+                                                            <span className="comment-action">({item.likedCount})</span>
+                                                        </span>,
+                                                        <Divider type='vertical' />,
+                                                        <span key="comment-basic-reply-to">回复</span>
+                                                    ]}
+                                                    author={<a className="nick-name" href={'#/user?id=' + item.user.userId}>{item.user.nickname}</a>}
+                                                    avatar={item.user.avatarUrl}
+                                                    content={
+                                                        <div>
+                                                            <p>{item.content}</p>
+
+                                                            {item.beReplied.map((ele: any) => {
+                                                                return (
+                                                                    <div key={ele.beRepliedCommentId} className="required-content">
+                                                                        <a className="nick-name" href={'#/user?id=' + ele.user.userId}>{ele.user.nickname}</a>：
+                                                                        <span className="content">{ele.content}</span>
+                                                                    </div>
+                                                                )
+                                                            })}
+                                                        </div>
+                                                    }
+                                                    datetime={
+                                                        <span>{moment(item.time).format('YYYY-MM-DD HH:mm')}</span>
+                                                    }
+                                                />
+                                            </li>
+                                        )}
+                                    />
+                                </div>
+                            </div> : ''}
+                            <div className="new-comment">
+                                <p className="c-title">
+                                    最新评论({songComment.total})
+                                </p>
+                                <div className="c-content">
+                                    <List
+                                        className="comment-list"
+                                        itemLayout="horizontal"
+                                        dataSource={songComment.comments}
+                                        renderItem={(item: any) => (
+                                            <li className='c-item' key={item.commentId}>
+                                                <Comment
+                                                    actions={[
+                                                        <span>
+                                                            {createElement(item.liked === 'liked' ? LikeFilled : LikeOutlined)}
+                                                            <span className="comment-action">({item.likedCount})</span>
+                                                        </span>,
+                                                        <Divider type='vertical' />,
+                                                        <span key="comment-basic-reply-to">回复</span>
+                                                    ]}
+                                                    author={<a className="nick-name" href={'#/user?id=' + item.user.userId}>{item.user.nickname}</a>}
+                                                    avatar={item.user.avatarUrl}
+                                                    content={
+                                                        <div>
+                                                            <p>{item.content}</p>
+
+                                                            {item.beReplied.map((ele: any) => {
+                                                                return (
+                                                                    <div key={ele.beRepliedCommentId} className="required-content">
+                                                                        <a className="nick-name" href={'#/user?id=' + ele.user.userId}>{ele.user.nickname}</a>：
+                                                                        <span className="content">{ele.content}</span>
+                                                                    </div>
+                                                                )
+                                                            })}
+                                                        </div>
+                                                    }
+                                                    datetime={
+                                                        <span>{moment(item.time).format('YYYY-MM-DD HH:mm')}</span>
+                                                    }
+                                                />
+                                            </li>
+                                        )}
+                                    />
+                                </div>
+                            </div>
+                            {songComment.total > 20 ? <div className="page-change">
+                                <Pagination
+                                    total={songComment.total}
+                                    defaultPageSize={20}
+                                    showSizeChanger={false}
+                                    onChange={this.onPageChange}
+                                    size='small'
+                                />
+                            </div> : ''}
                         </div>
                     </div>
-                    <div className="song-recommand"></div>
-                </div>
+                    <div className="song-recommand">
+                        {playlist.length ? <div className="income-playlist">
+                            <p className="in-title">
+                                包含这首歌的歌单
+                            </p>
+                            <div className="income-content">
+                                {playlist.map((item: any) => {
+                                    return (
+                                        <div className='playlist-item' key={item.id}>
+                                            <div className="img">
+                                                <a href={'#/playlist?id=' + item.id} title={item.name}><img src={item.coverImgUrl} alt="" width='50' height='50' /></a>
+                                            </div>
+                                            <div className="intro">
+                                                <p className="l-name"><a title={item.name} href={'#/playlist?id=' + item.id}>{item.name}</a></p>
+                                                <span className='by-name'>by <a href={'#/user?id=' + item.creator.userId} title={item.creator.nickname}>{item.creator.nickname}</a></span>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div> : ''}
+                        {songlist.length ? <div className="income-songlist">
+                            <p className="in-title">
+                                相似歌曲
+                            </p>
+                            <div className="income-content">
+                                {songlist.map((item: any) => {
+                                    return (
+                                        <div className='songlist-item' key={item.id}>
 
+                                            <div className="intro">
+                                                <p className="song-name"><a title={item.name} href={'#/song?id=' + item.id}>{item.name}</a></p>
+                                                <p className='ar-name'>
+                                                    {item.ar && item.ar.map((ele: any, index: number) => {
+                                                        return <span key={ele.id}>{index === 0 ? '' : '/'}<a href={'#/artisi?id=' + ele.id} title={ele.name}>{ele.name}</a></span>
+                                                    })}
+                                                </p>
+                                            </div>
+                                            <div className="btns">
+                                                <span className="play" onClick={() => this.playSong(item)}><MyIcon type='iconziyuan' /></span>
+                                                <span className="add" onClick={() => this.addSong(item)}><MyIcon type='iconsong_add' /></span>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div> : ''}
+                    </div>
+                </div>
+                    :
+                    <div className='no-song'>404</div>
+                }
             </div>
         );
+    }
+
+    private onPageChange = (pageNum: number) => {
+        // 页码变动
+        let param = this.state.param
+        param.offset = (pageNum - 1) * param.limit
+        this.setState(param, () => {
+            this.queryComment()
+            this.scrollToAnchor('songComment')
+        })
     }
 
     private scrollToAnchor(anchorName: string) {
@@ -148,22 +323,20 @@ class PageSong extends Component<RouteComponentProps, any> {
         this.setState({ showAll: !show })
     }
 
-    private playSong() {
+    private playSong(songInfo: any) {
         // 播放歌曲
-        let songDetail = this.state.songDetail
-        if (songDetail.name) {
-            let playSong = action.playSongAction(songDetail)
-            store.dispatch(playSong)
-        }
+
+
+        let playSong = action.playSongAction(songInfo)
+        store.dispatch(playSong)
+
     }
 
-    private addSong() {
+    private addSong(songInfo: any) {
         // 添加歌曲
-        let songDetail = this.state.songDetail
-        if (songDetail.name) {
-            let addSong = action.addSongAction(songDetail)
-            store.dispatch(addSong)
-        }
+        let addSong = action.addSongAction(songInfo)
+        store.dispatch(addSong)
+
     }
 
     private querySongDetail() {
@@ -172,8 +345,13 @@ class PageSong extends Component<RouteComponentProps, any> {
             let data = res.data.songs
             if (data.length) {
                 this.setState({ songDetail: data[0] })
+                this.queryComment()
+                this.queryLyric()
+                this.querySimiPlaylist()
+                this.querySimiSong()
             } else {
                 message.warning('暂无该歌曲信息,请重新搜索!')
+                this.setState({ existSong: false })
             }
         })
     }
@@ -182,11 +360,41 @@ class PageSong extends Component<RouteComponentProps, any> {
         // 获取歌词
         pageApi.queryLyric({ id: this.state.songId }).then(res => {
             let reg = /\[[^\]]+\]/g //匹配歌词中的时间
-            let str = res.data.lrc.lyric
-            let lyric = str && str.replace(reg, '<br/>')
-            this.setState({ lyric })
+            if (!res.data.nolyric) {
+                let str = res.data.lrc.lyric
+                let lyric = str && str.replace(reg, '<br/>')
+                this.setState({ lyric })
+            } else {
+                this.setState({ lyric: '暂无歌词!' })
+            }
+
         })
     }
+
+    private querySimiPlaylist() {
+        // 查询包含这首歌的歌单
+        pageApi.querySimiPlaylist({ id: this.state.songId }).then(res => {
+            this.setState({ playlist: res.data.playlists })
+        })
+    }
+
+    private querySimiSong() {
+        // 查询相似歌曲
+        pageApi.querySimiSong({ id: this.state.songId }).then(res => {
+            let data = res.data.songs
+            let songlist = data && data.map((item: any) => {
+                let obj = {
+                    name: item.name,
+                    id: item.id,
+                    al: { picUrl: item.album.picUrl },
+                    ar: item.artists
+                }
+                return obj
+            })
+            this.setState({ songlist })
+        })
+    }
+
 
     private queryComment() {
         // 获取评论

@@ -13,6 +13,7 @@
         .song-detail {
             border-right: 1px solid #d3d3d3;
             padding: 40px 0;
+            width: 720px;
 
             .song-info {
                 display: flex;
@@ -50,7 +51,7 @@
 
                 .song-intro {
                     padding: 0 20px 0 50px;
-                    width: 484px;
+                    width: 530px;
 
                     .icon {
                         display: inline-block;
@@ -171,18 +172,20 @@
                             cursor: pointer;
                             color: #0c73c2;
 
-                            
-                                &:hover {
-                                    .tip{
-                                        text-decoration: underline;
-                                    }
-                                    
+
+                            &:hover {
+                                .tip {
+                                    text-decoration: underline;
                                 }
-                            
+
+                            }
+
                         }
-                        .error{
+
+                        .error {
                             text-align: end;
-                            a{
+
+                            a {
                                 text-decoration: underline;
                                 color: #bababa;
                                 font-size: 12px;
@@ -191,22 +194,239 @@
                     }
                 }
             }
-            .song-comment{
+
+            .song-comment {
                 padding-right: 20px;
-                .comment-title{
+
+                .comment-title {
                     padding: 6px 0;
                     border-bottom: 2px solid #c20c0c;
-                    .main-title{
+
+                    .main-title {
                         font-size: 20px;
                         font-weight: 550;
                         margin-right: 14px;
                     }
-                    .sub-title{
+
+                    .sub-title {
                         font-size: 12px;
                         color: #666;
                     }
                 }
+
+                .send-comment {
+                    margin-top: 14px;
+                    display: flex;
+
+                    .ipt-area {
+                        background: #fff;
+                        border: 1px solid rgb(230, 230, 230);
+                        position: relative;
+                        margin-left: 15px;
+                        width: 100%;
+                        height: 64px;
+
+                        &:after,
+                        &:before {
+                            content: '';
+                            display: block;
+                            position: absolute;
+                            width: 0;
+                            height: 0;
+                            border-style: solid;
+                        }
+
+                        &:after {
+                            top: 5px;
+                            left: -14px;
+                            border-color: transparent #fff transparent transparent;
+                            border-width: 7px;
+                        }
+
+                        &:before {
+                            top: 4px;
+                            left: -16px;
+                            border-color: transparent #ccc transparent transparent;
+                            border-width: 8px;
+                        }
+
+                    }
+
+                }
+
+                .btns {
+                    margin-top: 10px;
+                    text-align: end;
+                }
+
+                .c-title {
+                    border-bottom: 1px solid #cfcfcf;
+                    margin-top: 20px;
+                    padding-bottom: 6px;
+                    font-weight: bold;
+                }
+
+                .c-content {
+                    .c-item {
+                        border-bottom: 1px dotted #ccc;
+
+                        &:last-child {
+                            border-bottom: none;
+                        }
+
+                        .ant-comment-actions {
+                            text-align: end;
+                        }
+
+                        .nick-name {
+                            color: #0c73c2;
+                            // cursor: pointer;
+                            font-size: 14px;
+
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
+
+                        .ant-comment-content-detail {
+                            .required-content {
+                                margin-top: 10px;
+                                border: 1px solid #dedede;
+                                background: #f4f4f4;
+                                position: relative;
+                                padding: 8px 20px;
+                                line-height: 20px;
+
+                                &:after,
+                                &:before {
+                                    content: '';
+                                    display: block;
+                                    position: absolute;
+                                    width: 0;
+                                    height: 0;
+                                    border-style: solid;
+                                }
+
+                                &:after {
+                                    top: -14px;
+                                    left: 21px;
+                                    border-color: transparent transparent #f4f4f4 transparent;
+                                    border-width: 7px;
+                                }
+
+                                &:before {
+                                    top: -16px;
+                                    left: 20px;
+                                    border-color: transparent transparent #dedede transparent;
+                                    border-width: 8px;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .page-change {
+                    margin-top: 20px;
+                    text-align: center;
+                }
             }
         }
+
+        .song-recommand {
+            width: 260px;
+            padding: 20px 0 0 30px;
+            color: #333;
+
+
+
+            .income-playlist,
+            .income-songlist {
+                margin-bottom: 40px;
+                .in-title {
+                    border-bottom: 1px solid #ccc;
+                    font-weight: bold;
+                    padding-bottom: 4px;
+                    margin: 0;
+                }
+
+                .income-content {
+                    padding-top: 10px;
+
+                    .playlist-item,.songlist-item{
+                        display: flex;
+                        margin-bottom: 15px;
+
+                        .intro {
+                            margin-left: 10px;
+
+                            a {
+                                color: #000;
+
+                                &:hover {
+                                    text-decoration: underline;
+                                }
+                            }
+
+                            
+                        }
+                    }
+                    .playlist-item{
+                        .l-name {
+                            width: 150px;
+                            margin: 0;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+
+                        }
+
+                        .by-name {
+                            font-size: 12px;
+                            color: #999;
+
+                            a {
+                                color: #666;
+                            }
+                        }
+                    }
+                
+                    .songlist-item{
+                        margin-bottom: 8px;
+                        .song-name {
+                            width: 150px;
+                            margin: 0;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            font-size: 12px;
+                        }
+
+                        .ar-name {
+                            margin: 0;
+                            a {
+                                color: #999;
+                            }
+                        }
+                        .btns{
+                            line-height: 40px;
+                            .play,.add{
+                                cursor: pointer;
+                            }
+                            .play{
+                                margin-right: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+           
+
+        }
+    }
+
+    .no-song {
+        text-align: center;
+        padding-top: 200px;
+        font-size: 100px;
     }
 }

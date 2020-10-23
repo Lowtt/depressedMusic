@@ -4,7 +4,7 @@
  * @Autor: Lowt
  * @Date: 2020-10-22 10:53:15
  * @LastEditors: Lowt
- * @LastEditTime: 2020-10-22 15:43:39
+ * @LastEditTime: 2020-10-23 16:40:10
  */
 import fetch from '../utils/fetch'
 
@@ -25,6 +25,15 @@ class SongApi {
     return fetch.get<any>(`/lyric?id=${req.id}`)
   }
 
+  public querySimiPlaylist(req:any) {
+    // 查询包含这个歌的歌单
+    return fetch.get<any>(`/simi/playlist?id=${req.id}`)
+  }
+
+  public querySimiSong(req:any) {
+    // 查询相似歌曲
+    return fetch.get<any>(`/simi/song?id=${req.id}`)
+  }
 
 }
 
