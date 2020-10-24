@@ -392,7 +392,7 @@
                 
                     .songlist-item{
                         margin-bottom: 8px;
-                        .song-name {
+                        .song-name,.ar-name {
                             width: 150px;
                             margin: 0;
                             overflow: hidden;
@@ -402,7 +402,6 @@
                         }
 
                         .ar-name {
-                            margin: 0;
                             a {
                                 color: #999;
                             }
