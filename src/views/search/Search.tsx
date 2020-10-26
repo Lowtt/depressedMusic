@@ -77,7 +77,7 @@ class PageSearch extends Component<RouteComponentProps, any> {
               {tabData.map((item: tabItem) => {
                 return (
                   <TabPane tab={item.name} key={item.type + ''}>
-                    {+activeKey === item.type ? <TabContent type={item.type} data={displayData.songs} /> : null}
+                    {+activeKey === item.type ? <TabContent type={item.type} data={displayData.songs} keyword={title}/> : null}
                   </TabPane>
                 )
               })}

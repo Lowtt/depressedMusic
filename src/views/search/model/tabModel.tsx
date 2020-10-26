@@ -7,6 +7,9 @@ import { createFromIconfontCN } from '@ant-design/icons';
 import store from '../../../store'
 import action from '../../../store/model/playSong/actionCreators'
 
+import context from './common'
+import PageArtist from './artist'
+
 
 const MyIcon = createFromIconfontCN({
     scriptUrl: (window as any).ICON_URL
@@ -19,6 +22,7 @@ class PageModel extends Component<componentInter, any> {
         super(props);
         this.state = {
             type: this.props.type,
+            keyword:this.props.keyword
         };
 
     }
@@ -32,16 +36,16 @@ class PageModel extends Component<componentInter, any> {
     public componentDidMount() { }
 
     public render() {
-        const { type } = this.state
+        const { type,keyword } = this.state
         // const {}
         return (
             <div className="page-tab-content">
-                {this.createSongs(type)}
+                {this.createSongs(type,keyword)}
             </div>
         );
     }
 
-    private createSongs(type: number) {
+    private createSongs(type: number,keyword:string) {
         let ele = null
         switch (type) {
             case 1:
@@ -90,6 +94,11 @@ class PageModel extends Component<componentInter, any> {
                     )}
                 />
                 break;
+            case 100:
+                ele = <context.Provider value={{type:100,keywords:keyword}}>
+                    <PageArtist />
+                </context.Provider>
+                break;
             default: break
         }
 
@@ -113,7 +122,7 @@ class PageModel extends Component<componentInter, any> {
         store.dispatch(addSong)
     }
 
-    private playSong(songInfo:any){
+    private playSong(songInfo: any) {
         let playSong = action.playSongAction(songInfo)
         store.dispatch(playSong)
     }
@@ -124,7 +133,8 @@ class PageModel extends Component<componentInter, any> {
 
 interface componentInter {
     type: number
-    data: []
+    data: [],
+    keyword:string
 }
 
 interface artists {
