@@ -21,13 +21,13 @@ class PageModel extends Component<componentInter, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            type: this.props.type,
-            keyword:this.props.keyword
+            // type: this.props.type,
+            // keyword:this.props.keyword
         };
 
     }
     public shouldComponentUpdate(nexPros: any) {
-        if (this.props.data !== nexPros.data) {
+        if (this.props.data !== nexPros.data || this.props.keyword !== nexPros.keyword || this.props.type !== nexPros.type) {
             return true
         }
         return false
@@ -36,16 +36,16 @@ class PageModel extends Component<componentInter, any> {
     public componentDidMount() { }
 
     public render() {
-        const { type,keyword } = this.state
+        const { type, keyword } = this.props
         // const {}
         return (
             <div className="page-tab-content">
-                {this.createSongs(type,keyword)}
+                {this.createSongs(type, keyword)}
             </div>
         );
     }
 
-    private createSongs(type: number,keyword:string) {
+    private createSongs(type: number, keyword: string) {
         let ele = null
         switch (type) {
             case 1:
@@ -95,7 +95,7 @@ class PageModel extends Component<componentInter, any> {
                 />
                 break;
             case 100:
-                ele = <context.Provider value={{type:100,keywords:keyword}}>
+                ele = <context.Provider value={{ type: 100, keywords: keyword }}>
                     <PageArtist />
                 </context.Provider>
                 break;
@@ -134,7 +134,7 @@ class PageModel extends Component<componentInter, any> {
 interface componentInter {
     type: number
     data: [],
-    keyword:string
+    keyword: string
 }
 
 interface artists {

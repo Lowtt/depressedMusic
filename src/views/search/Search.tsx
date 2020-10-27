@@ -92,12 +92,21 @@ class PageSearch extends Component<RouteComponentProps, any> {
   private search(val: string) {
     this.props.history.push('/search?value=' + val)
     const { activeKey } = this.state
-    this.getSearchResult(+activeKey, val)
+    if(activeKey==='1'){ //在歌曲搜索页触发,其他界面另做处理
+      this.getSearchResult(+activeKey, val)
+    }else{
+      this.setState({title:val})
+    }
+    
   }
   // 面板切换时触发
   private tabChange(key: string) {
     const { title } = this.state
-    this.getSearchResult(+key, title)
+    this.setState({activeKey:key})
+    if(key==='1'){
+      this.getSearchResult(+key, title)
+    }
+    
   }
 
   // 获取搜索结果

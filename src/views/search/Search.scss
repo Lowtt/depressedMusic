@@ -123,6 +123,18 @@
                     }
                 }
             }
+            .page-artist{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                .artist-item{
+                    width: 20%;
+                    margin-bottom: 10px;
+                    .artist-name{
+                        padding-top: 10px;
+                    }
+                }
+            }
         }
     }
 
